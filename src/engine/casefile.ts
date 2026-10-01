@@ -227,7 +227,10 @@ function parseRequest(ctx: Ctx, raw: unknown, path: string): RightsRequest | und
         notifiedOn: ctx.str(e, 'notifiedOn', `${path}.extension`, { pattern: ISO_DATE }) ?? '',
       };
       // The import path must obey the same statutory guards as requestExtension(); an imported file is not a way around them.
-      if (receivedOn && jurisdiction && extension.notifiedOn && Number.isInteger(extension.days)) {
+      // ctx.str/ctx.int return the raw value even after logging an error, so the cross-field arithmetic
+      // (which throws on malformed dates and unknown profiles) runs only when every input is independently valid.
+      const inputsValid = receivedOn !== undefined && isStrictDate(receivedOn) && jurisdiction !== undefined && JURISDICTIONS.has(jurisdiction) && isStrictDate(extension.notifiedOn) && Number.isInteger(extension.days) && extension.days >= 1;
+      if (inputsValid) {
         const probe = { receivedOn, jurisdiction: jurisdiction as RightsRequest['jurisdiction'] } as RightsRequest;
         const max = maxExtensionDays(probe);
         const statutory = statutoryDueOn(probe);

@@ -152,3 +152,33 @@ describe('imported extensions obey the same guards as requestExtension (sixth-Fa
     if (res.ok) expect(parseCaseFile(serializeCaseFile(res.file)).ok).toBe(true);
   });
 });
+
+describe('cross-field extension arithmetic only runs on valid inputs (regression)', () => {
+  const file = () => JSON.parse(JSON.stringify(demo)) as typeof demo;
+  const first = (f: typeof demo) => f.requests[0] as unknown as Record<string, unknown>;
+  it('an invalid jurisdiction with an extension returns ok:false instead of throwing', () => {
+    const f = file(); first(f)['extension'] = { days: 1, reason: 'test', notifiedOn: '2026-10-01' }; first(f)['jurisdiction'] = 'INVALID';
+    let r!: ReturnType<typeof parseCaseFile>;
+    expect(() => { r = parseCaseFile(JSON.stringify(f)); }).not.toThrow();
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.errors.join(' ')).toMatch(/jurisdiction/);
+  });
+  it('an inherited object-property name as jurisdiction (constructor, toString, __proto__) returns ok:false instead of throwing', () => {
+    for (const name of ['constructor', 'toString', '__proto__', 'hasOwnProperty']) {
+      const f = file(); first(f)['extension'] = { days: 1, reason: 'test', notifiedOn: '2026-10-01' }; first(f)['jurisdiction'] = name;
+      let r!: ReturnType<typeof parseCaseFile>;
+      expect(() => { r = parseCaseFile(JSON.stringify(f)); }, name).not.toThrow();
+      expect(r.ok, name).toBe(false);
+    }
+  });
+  it('a malformed receivedOn or notifiedOn with an extension returns ok:false instead of throwing', () => {
+    const a = file(); first(a)['extension'] = { days: 1, reason: 'test', notifiedOn: '2026-10-01' }; first(a)['receivedOn'] = 'garbage';
+    const b = file(); first(b)['extension'] = { days: 1, reason: 'test', notifiedOn: 'next week' };
+    const c = file(); first(c)['extension'] = { days: 1, reason: 'test', notifiedOn: '2026-02-30' };
+    for (const f of [a, b, c]) {
+      let r!: ReturnType<typeof parseCaseFile>;
+      expect(() => { r = parseCaseFile(JSON.stringify(f)); }).not.toThrow();
+      expect(r.ok).toBe(false);
+    }
+  });
+});

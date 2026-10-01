@@ -85,12 +85,12 @@ React 19 + TypeScript 5.9 + Vite 7; Vitest 4 with jsdom and Testing Library; fas
 
 ## Tests
 
-`npm test` runs 65 tests in 5 files (measured 1 Oct 2026; engine 60 + UI integration 5; see `EVIDENCE.md` for the RED/GREEN record, including eight review-driven tests added red-first):
+`npm test` runs 68 tests in 5 files (measured 1 Oct 2026; engine 63 + UI integration 5; see `EVIDENCE.md` for the RED/GREEN record, including eleven review-driven tests added red-first):
 
 - `deadline.test.ts` (20): calendar arithmetic incl. a property test over ±5,000 days, profile encodings, status bands, extension refusals, extension input validation.
 - `workflow.test.ts` (15): every guard, immutability, attempt exhaustion, explanations.
 - `reconcile.test.ts` (9): duplicate rules and packet assembly.
-- `audit.test.ts` (16): chain linkage, tamper and deletion detection, import bounds and schema rejection, strict calendar dates, imported extensions held to the statutory guards.
+- `audit.test.ts` (19): chain linkage, tamper and deletion detection, import bounds and schema rejection, strict calendar dates, imported extensions held to the statutory guards, invalid-input regression (importer returns `ok:false`, never throws).
 - `App.test.tsx` (5): integration through the rendered UI (written after the UI as regression coverage; the engine tests were written first).
 
 ## Data handling
