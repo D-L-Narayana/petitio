@@ -1,5 +1,7 @@
 # Petitio — privacy rights request desk
 
+[Open the public educational demo](https://dln-petitio.vercel.app). Use synthetic data only; the deadline profiles are teaching models, not legal advice.
+
 Educational, browser-local prototype of a privacy-operations desk for individual rights requests (access, erasure, rectification, portability, opt-out of sale). It is built to make the *decision logic* inspectable: a deterministic deadline clock, an explicit request state machine whose refusals explain themselves, duplicate detection, multi-system reconciliation with redaction, and a hash-chained audit log.
 
 > Educational prototype. Not legal advice, not a compliance certification, and not a claim of experience with any commercial privacy platform (OneTrust, BigID and similar products are referenced only as context). All people, systems and emails are synthetic (`*.example`).
