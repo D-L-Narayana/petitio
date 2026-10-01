@@ -1,0 +1,71 @@
+{
+  "viewports": [
+    {
+      "name": "desktop",
+      "status": 200,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "hosts": [
+        "127.0.0.1:6100"
+      ],
+      "overflow": false,
+      "overflowing": [],
+      "axeViolations": []
+    },
+    {
+      "name": "tablet",
+      "status": 200,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "hosts": [
+        "127.0.0.1:6100"
+      ],
+      "overflow": false,
+      "overflowing": [
+        "LI.rail-step",
+        "SPAN.rail-node "
+      ],
+      "axeViolations": []
+    },
+    {
+      "name": "mobile",
+      "status": 200,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "hosts": [
+        "127.0.0.1:6100"
+      ],
+      "overflow": false,
+      "overflowing": [
+        "LI.rail-step",
+        "SPAN.rail-node done",
+        "LI.rail-step",
+        "SPAN.rail-link done",
+        "SPAN.rail-node current",
+        "LI.rail-step",
+        "SPAN.rail-link ",
+        "SPAN.rail-node ",
+        "LI.rail-step",
+        "SPAN.rail-link ",
+        "SPAN.rail-node ",
+        "TABLE."
+      ],
+      "axeViolations": []
+    }
+  ],
+  "flow": {
+    "steps": 10,
+    "pageErrors": [],
+    "consoleErrors": [],
+    "result": {
+      "blockedText": "Holds without a written justification: HOLD-0411-1.",
+      "extensionRefusal": "Refused. EXTENSION_TOO_LATE: Extension notice dated 2026-12-01 is after the initial due date 2026-10-15; EU GDPR requires notice within the initial window.",
+      "auditBroken": "Chain broken at entry 1: the stored hash or previous-hash link does not match the recomputed value.",
+      "importErrors": "Import rejected. Fix these and try again:casefile.schema \"nope\" is not an allowed valuecasefile.systems must list at least one system of recordcasefile.requests[0].receivedOn is requiredcasefile.requests[0].jurisdiction is requiredcasefile.requests[0].type is requiredcasefile.requests[0].stage \"teleported\" is not an allowed valuecasefile.requests[0].requester must be an objectcasefile.requests[0].identity must be an object"
+    },
+    "axeAfter": []
+  }
+}

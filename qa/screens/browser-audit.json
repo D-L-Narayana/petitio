@@ -1,0 +1,149 @@
+{
+  "url": "http://127.0.0.1:6100/",
+  "startedAt": "2026-10-01T14:42:59.175Z",
+  "viewports": [
+    {
+      "name": "desktop",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "hosts": [
+        "127.0.0.1:6100"
+      ],
+      "layout": {
+        "title": "Petitio — privacy rights request desk",
+        "viewport": 1440,
+        "scrollWidth": 1440,
+        "overflowing": [],
+        "buttons": 19,
+        "storageApisTouched": false
+      },
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "axePasses": 27
+    },
+    {
+      "name": "tablet",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "hosts": [
+        "127.0.0.1:6100"
+      ],
+      "layout": {
+        "title": "Petitio — privacy rights request desk",
+        "viewport": 768,
+        "scrollWidth": 768,
+        "overflowing": [
+          "LI.rail-step",
+          "SPAN.rail-node "
+        ],
+        "buttons": 19,
+        "storageApisTouched": false
+      },
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "axePasses": 28
+    },
+    {
+      "name": "mobile",
+      "status": 200,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "hosts": [
+        "127.0.0.1:6100"
+      ],
+      "layout": {
+        "title": "Petitio — privacy rights request desk",
+        "viewport": 375,
+        "scrollWidth": 375,
+        "overflowing": [
+          "LI.rail-step",
+          "SPAN.rail-node done",
+          "LI.rail-step",
+          "SPAN.rail-link done",
+          "SPAN.rail-node current",
+          "LI.rail-step",
+          "SPAN.rail-link ",
+          "SPAN.rail-node ",
+          "LI.rail-step",
+          "SPAN.rail-link ",
+          "SPAN.rail-node ",
+          "TABLE."
+        ],
+        "buttons": 19,
+        "storageApisTouched": false
+      },
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "axePasses": 28
+    }
+  ],
+  "flow": {
+    "steps": [
+      {
+        "step": 1,
+        "label": "docket-overdue-selected",
+        "file": "flow-01-docket-overdue-selected.png"
+      },
+      {
+        "step": 2,
+        "label": "blocked-send-to-review-explained",
+        "file": "flow-02-blocked-send-to-review-explained.png"
+      },
+      {
+        "step": 3,
+        "label": "sent-to-review",
+        "file": "flow-03-sent-to-review.png"
+      },
+      {
+        "step": 4,
+        "label": "unjustified-hold-blocks-response",
+        "file": "flow-04-unjustified-hold-blocks-response.png"
+      },
+      {
+        "step": 5,
+        "label": "response-ready-with-redaction",
+        "file": "flow-05-response-ready-with-redaction.png"
+      },
+      {
+        "step": 6,
+        "label": "redaction-revealed",
+        "file": "flow-06-redaction-revealed.png"
+      },
+      {
+        "step": 7,
+        "label": "extension-refused-too-late",
+        "file": "flow-07-extension-refused-too-late.png"
+      },
+      {
+        "step": 8,
+        "label": "audit-chain-tamper-detected",
+        "file": "flow-08-audit-chain-tamper-detected.png"
+      },
+      {
+        "step": 9,
+        "label": "import-rejected",
+        "file": "flow-09-import-rejected.png"
+      },
+      {
+        "step": 10,
+        "label": "keyboard-focus",
+        "file": "flow-10-keyboard-focus.png"
+      }
+    ],
+    "result": {
+      "blockedText": "Holds without a written justification: HOLD-0411-1.",
+      "extensionRefusal": "Refused. EXTENSION_TOO_LATE: Extension notice dated 2026-12-01 is after the initial due date 2026-10-15; EU GDPR requires notice within the initial window.",
+      "auditBroken": "Chain broken at entry 1: the stored hash or previous-hash link does not match the recomputed value.",
+      "importErrors": "Import rejected. Fix these and try again:casefile.schema \"nope\" is not an allowed valuecasefile.systems must list at least one system of recordcasefile.requests[0].receivedOn is requiredcasefile.requests[0].jurisdiction is requiredcasefile.requests[0].type is requiredcasefile.requests[0].stage \"teleported\" is not an allowed valuecasefile.requests[0].requester must be an objectcasefile.requests[0].identity must be an object"
+    },
+    "pageErrors": [],
+    "consoleErrors": [],
+    "axeViolationsAfterFlow": []
+  },
+  "finishedAt": "2026-10-01T14:43:24.199Z"
+}

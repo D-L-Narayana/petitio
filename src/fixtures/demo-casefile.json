@@ -1,0 +1,295 @@
+{
+  "schema": "petitio.casefile",
+  "version": 1,
+  "asOf": "2026-10-01",
+  "systems": [
+    { "id": "crm", "name": "Northwind CRM (synthetic)", "description": "Customer profiles, marketing preferences and agent notes." },
+    { "id": "billing", "name": "Ledgerly Billing (synthetic)", "description": "Invoices, payment references and tax records." },
+    { "id": "support", "name": "Helpdesk Tickets (synthetic)", "description": "Support conversations and attachments." }
+  ],
+  "requests": [
+    {
+      "id": "REQ-2026-0411",
+      "receivedOn": "2026-09-08",
+      "jurisdiction": "EU-GDPR",
+      "type": "access",
+      "requester": { "pseudonym": "lark-7731", "email": "lark.7731@people.example", "accountId": "ACC-10431", "ageBand": "adult" },
+      "stage": "collecting",
+      "identity": { "method": "account-login", "attempts": 1, "maxAttempts": 3, "status": "passed" },
+      "holds": [],
+      "systemResults": [
+        {
+          "systemId": "crm",
+          "found": true,
+          "recordId": "crm-10431",
+          "matchedBy": ["accountId", "email"],
+          "subjectEmail": "lark.7731@people.example",
+          "fields": [
+            { "name": "displayName", "value": "Lark Veddington" },
+            { "name": "marketingOptIn", "value": "false" },
+            { "name": "agentNote", "value": "Caller's brother Rowan asked us to update the delivery slot.", "thirdParty": true }
+          ],
+          "lookedUpAt": "2026-09-12T10:04:00Z"
+        },
+        {
+          "systemId": "billing",
+          "found": true,
+          "recordId": "cust-88112",
+          "matchedBy": ["accountId"],
+          "subjectEmail": "lark.7731@people.example",
+          "fields": [
+            { "name": "lastInvoice", "value": "INV-55120 (2026-07-02)" },
+            { "name": "paymentMethod", "value": "card ending 4412" }
+          ],
+          "lookedUpAt": "2026-09-12T10:09:00Z"
+        }
+      ],
+      "history": [
+        { "at": "2026-09-08T08:30:00Z", "from": "received", "to": "identity-check", "action": "start-identity-check", "actor": "analyst.mira" },
+        { "at": "2026-09-09T11:00:00Z", "from": "identity-check", "to": "verified", "action": "identity-passed", "actor": "analyst.mira", "note": "Signed-in account session matched" },
+        { "at": "2026-09-12T09:55:00Z", "from": "verified", "to": "collecting", "action": "begin-collection", "actor": "analyst.mira" }
+      ],
+      "notes": ["Helpdesk lookup still outstanding."]
+    },
+    {
+      "id": "REQ-2026-0398",
+      "receivedOn": "2026-08-27",
+      "jurisdiction": "EU-GDPR",
+      "type": "erasure",
+      "requester": { "pseudonym": "quill-2048", "email": "quill.2048@people.example", "accountId": "ACC-20480", "ageBand": "adult" },
+      "stage": "review",
+      "identity": { "method": "email-loop", "attempts": 1, "maxAttempts": 3, "status": "passed" },
+      "holds": [
+        {
+          "id": "HOLD-0398-1",
+          "systemId": "billing",
+          "reason": "legal-obligation-retention",
+          "note": "Invoices must be retained for the synthetic fiscal retention period; erasure limited to marketing and profile data.",
+          "appliedAt": "2026-09-20T15:10:00Z"
+        }
+      ],
+      "systemResults": [
+        {
+          "systemId": "crm",
+          "found": true,
+          "recordId": "crm-20480",
+          "matchedBy": ["email"],
+          "subjectEmail": "quill.2048@people.example",
+          "fields": [
+            { "name": "displayName", "value": "Quill Oberesh" },
+            { "name": "segments", "value": "newsletter, loyalty-tier-2" }
+          ],
+          "lookedUpAt": "2026-09-15T09:00:00Z"
+        },
+        {
+          "systemId": "billing",
+          "found": true,
+          "recordId": "cust-20480",
+          "matchedBy": ["accountId"],
+          "subjectEmail": "quill.2048@people.example",
+          "fields": [{ "name": "invoices", "value": "6 invoices, 2024-2026" }],
+          "lookedUpAt": "2026-09-15T09:10:00Z"
+        },
+        {
+          "systemId": "support",
+          "found": false,
+          "fields": [],
+          "lookedUpAt": "2026-09-15T09:12:00Z"
+        }
+      ],
+      "history": [
+        { "at": "2026-08-27T13:00:00Z", "from": "received", "to": "identity-check", "action": "start-identity-check", "actor": "analyst.tomas" },
+        { "at": "2026-08-29T09:30:00Z", "from": "identity-check", "to": "verified", "action": "identity-passed", "actor": "analyst.tomas" },
+        { "at": "2026-09-15T08:45:00Z", "from": "verified", "to": "collecting", "action": "begin-collection", "actor": "analyst.tomas" },
+        { "at": "2026-09-20T15:00:00Z", "from": "collecting", "to": "review", "action": "send-to-review", "actor": "analyst.tomas" }
+      ],
+      "notes": ["Reviewer sign-off pending since 20 Sep."]
+    },
+    {
+      "id": "REQ-2026-0420",
+      "receivedOn": "2026-09-25",
+      "jurisdiction": "US-CA-CCPA",
+      "type": "opt-out-sale",
+      "requester": { "pseudonym": "fern-5109", "email": "fern.5109@people.example", "ageBand": "unknown" },
+      "stage": "identity-check",
+      "identity": { "method": "email-loop", "attempts": 1, "maxAttempts": 3, "status": "pending" },
+      "holds": [],
+      "systemResults": [],
+      "history": [
+        { "at": "2026-09-25T17:20:00Z", "from": "received", "to": "identity-check", "action": "start-identity-check", "actor": "analyst.mira" },
+        { "at": "2026-09-27T10:00:00Z", "from": "identity-check", "to": "identity-check", "action": "identity-failed", "actor": "analyst.mira", "note": "Verification link not clicked within 48h" }
+      ],
+      "notes": []
+    },
+    {
+      "id": "REQ-2026-0402",
+      "receivedOn": "2026-09-01",
+      "jurisdiction": "UK-GDPR",
+      "type": "portability",
+      "requester": { "pseudonym": "moss-9112", "email": "moss.9112@people.example", "accountId": "ACC-91120", "ageBand": "adult" },
+      "stage": "collecting",
+      "identity": { "method": "document-upload", "attempts": 1, "maxAttempts": 3, "status": "passed" },
+      "extension": { "days": 61, "reason": "Export requires reconstructing three years of ticket attachments across archived storage.", "notifiedOn": "2026-09-20" },
+      "holds": [],
+      "systemResults": [
+        {
+          "systemId": "crm",
+          "found": true,
+          "recordId": "crm-91120",
+          "matchedBy": ["accountId"],
+          "subjectEmail": "moss.9112@people.example",
+          "fields": [{ "name": "displayName", "value": "Moss Arquette" }, { "name": "preferredLanguage", "value": "en-GB" }],
+          "lookedUpAt": "2026-09-18T12:00:00Z"
+        },
+        {
+          "systemId": "billing",
+          "found": true,
+          "recordId": "cust-91120",
+          "matchedBy": ["accountId"],
+          "subjectEmail": "moss.9112@people.example",
+          "fields": [{ "name": "invoices", "value": "14 invoices" }],
+          "lookedUpAt": "2026-09-18T12:05:00Z"
+        },
+        {
+          "systemId": "support",
+          "found": true,
+          "recordId": "tickets-91120",
+          "matchedBy": ["email"],
+          "subjectEmail": "moss.9112@people.example",
+          "fields": [{ "name": "tickets", "value": "37 tickets, 212 attachments" }],
+          "lookedUpAt": "2026-09-19T08:00:00Z"
+        }
+      ],
+      "history": [
+        { "at": "2026-09-01T09:00:00Z", "from": "received", "to": "identity-check", "action": "start-identity-check", "actor": "analyst.tomas" },
+        { "at": "2026-09-04T09:00:00Z", "from": "identity-check", "to": "verified", "action": "identity-passed", "actor": "analyst.tomas" },
+        { "at": "2026-09-18T11:50:00Z", "from": "verified", "to": "collecting", "action": "begin-collection", "actor": "analyst.tomas" }
+      ],
+      "notes": ["Extension notice sent 20 Sep within the first month."]
+    },
+    {
+      "id": "REQ-2026-0415",
+      "receivedOn": "2026-09-15",
+      "jurisdiction": "EU-GDPR",
+      "type": "rectification",
+      "requester": { "pseudonym": "sorrel-3306", "email": "sorrel.3306@people.example", "ageBand": "adult" },
+      "stage": "received",
+      "identity": { "method": "none", "attempts": 0, "maxAttempts": 3, "status": "not-started" },
+      "holds": [],
+      "systemResults": [],
+      "history": [],
+      "notes": ["Requester says postal address is out of date."]
+    },
+    {
+      "id": "REQ-2026-0416",
+      "receivedOn": "2026-09-16",
+      "jurisdiction": "EU-GDPR",
+      "type": "access",
+      "requester": { "pseudonym": "lark-7731", "email": "LARK.7731@people.example", "ageBand": "adult" },
+      "stage": "received",
+      "identity": { "method": "none", "attempts": 0, "maxAttempts": 3, "status": "not-started" },
+      "holds": [],
+      "systemResults": [],
+      "history": [],
+      "notes": ["Second access request from the same person eight days after REQ-2026-0411."]
+    },
+    {
+      "id": "REQ-2026-0399",
+      "receivedOn": "2026-09-05",
+      "jurisdiction": "EU-GDPR",
+      "type": "erasure",
+      "requester": { "pseudonym": "heron-6650", "email": "heron.6650@people.example", "accountId": "ACC-66500", "ageBand": "adult" },
+      "stage": "response-ready",
+      "identity": { "method": "account-login", "attempts": 1, "maxAttempts": 3, "status": "passed" },
+      "holds": [],
+      "systemResults": [
+        {
+          "systemId": "crm",
+          "found": true,
+          "recordId": "crm-66500",
+          "matchedBy": ["accountId", "email"],
+          "subjectEmail": "heron.6650@people.example",
+          "fields": [
+            { "name": "displayName", "value": "Heron Dalisay" },
+            { "name": "agentNote", "value": "Neighbour Ines Farrow accepted the parcel on 3 June.", "thirdParty": true }
+          ],
+          "lookedUpAt": "2026-09-10T09:00:00Z"
+        },
+        {
+          "systemId": "billing",
+          "found": false,
+          "fields": [],
+          "lookedUpAt": "2026-09-10T09:05:00Z"
+        },
+        {
+          "systemId": "support",
+          "found": true,
+          "recordId": "tickets-66501",
+          "matchedBy": ["email"],
+          "subjectEmail": "heron.other@people.example",
+          "fields": [{ "name": "tickets", "value": "2 tickets about a damaged parcel" }],
+          "lookedUpAt": "2026-09-10T09:08:00Z"
+        }
+      ],
+      "history": [
+        { "at": "2026-09-05T10:00:00Z", "from": "received", "to": "identity-check", "action": "start-identity-check", "actor": "analyst.mira" },
+        { "at": "2026-09-05T10:05:00Z", "from": "identity-check", "to": "verified", "action": "identity-passed", "actor": "analyst.mira" },
+        { "at": "2026-09-10T08:55:00Z", "from": "verified", "to": "collecting", "action": "begin-collection", "actor": "analyst.mira" },
+        { "at": "2026-09-10T09:15:00Z", "from": "collecting", "to": "review", "action": "send-to-review", "actor": "analyst.mira" },
+        { "at": "2026-09-29T16:00:00Z", "from": "review", "to": "response-ready", "action": "prepare-response", "actor": "reviewer.anik" }
+      ],
+      "notes": ["Support ticket email does not match requester; withheld pending re-verification."]
+    },
+    {
+      "id": "REQ-2026-0380",
+      "receivedOn": "2026-08-10",
+      "jurisdiction": "US-CA-CCPA",
+      "type": "access",
+      "requester": { "pseudonym": "aspen-1187", "email": "aspen.1187@people.example", "accountId": "ACC-11870", "ageBand": "adult" },
+      "stage": "closed",
+      "closedOn": "2026-09-15",
+      "identity": { "method": "account-login", "attempts": 1, "maxAttempts": 3, "status": "passed" },
+      "holds": [],
+      "systemResults": [
+        {
+          "systemId": "crm",
+          "found": true,
+          "recordId": "crm-11870",
+          "matchedBy": ["accountId"],
+          "subjectEmail": "aspen.1187@people.example",
+          "fields": [{ "name": "displayName", "value": "Aspen Kowalczyk" }],
+          "lookedUpAt": "2026-08-20T09:00:00Z"
+        },
+        { "systemId": "billing", "found": false, "fields": [], "lookedUpAt": "2026-08-20T09:01:00Z" },
+        { "systemId": "support", "found": false, "fields": [], "lookedUpAt": "2026-08-20T09:02:00Z" }
+      ],
+      "history": [
+        { "at": "2026-08-10T09:00:00Z", "from": "received", "to": "identity-check", "action": "start-identity-check", "actor": "analyst.tomas" },
+        { "at": "2026-08-11T09:00:00Z", "from": "identity-check", "to": "verified", "action": "identity-passed", "actor": "analyst.tomas" },
+        { "at": "2026-08-20T08:50:00Z", "from": "verified", "to": "collecting", "action": "begin-collection", "actor": "analyst.tomas" },
+        { "at": "2026-08-20T09:10:00Z", "from": "collecting", "to": "review", "action": "send-to-review", "actor": "analyst.tomas" },
+        { "at": "2026-09-12T14:00:00Z", "from": "review", "to": "response-ready", "action": "prepare-response", "actor": "reviewer.anik" },
+        { "at": "2026-09-15T10:00:00Z", "from": "response-ready", "to": "closed", "action": "close", "actor": "analyst.tomas", "note": "Packet delivered through secure portal (simulated)" }
+      ],
+      "notes": []
+    },
+    {
+      "id": "REQ-2026-0390",
+      "receivedOn": "2026-08-20",
+      "jurisdiction": "EU-GDPR",
+      "type": "access",
+      "requester": { "pseudonym": "bramble-4420", "email": "bramble.4420@people.example", "ageBand": "adult" },
+      "stage": "rejected",
+      "rejectReason": "manifestly-unfounded",
+      "identity": { "method": "email-loop", "attempts": 1, "maxAttempts": 3, "status": "passed" },
+      "holds": [],
+      "systemResults": [],
+      "history": [
+        { "at": "2026-08-20T09:00:00Z", "from": "received", "to": "identity-check", "action": "start-identity-check", "actor": "analyst.mira" },
+        { "at": "2026-08-21T09:00:00Z", "from": "identity-check", "to": "verified", "action": "identity-passed", "actor": "analyst.mira" },
+        { "at": "2026-08-25T09:00:00Z", "from": "verified", "to": "rejected", "action": "reject", "actor": "reviewer.anik", "note": "Fourth identical request in six weeks; documented as manifestly unfounded (synthetic scenario)." }
+      ],
+      "notes": []
+    }
+  ]
+}
