@@ -85,12 +85,12 @@ React 19 + TypeScript 5.9 + Vite 7; Vitest 4 with jsdom and Testing Library; fas
 
 ## Tests
 
-`npm test` runs 62 tests in 5 files (measured 1 Oct 2026; engine 57 + UI integration 5; see `EVIDENCE.md` for the RED/GREEN record, including five review-driven tests added red-first):
+`npm test` runs 65 tests in 5 files (measured 1 Oct 2026; engine 60 + UI integration 5; see `EVIDENCE.md` for the RED/GREEN record, including eight review-driven tests added red-first):
 
-- `deadline.test.ts` (17): calendar arithmetic incl. a property test over ±5,000 days, profile encodings, status bands, extension refusals.
+- `deadline.test.ts` (20): calendar arithmetic incl. a property test over ±5,000 days, profile encodings, status bands, extension refusals, extension input validation.
 - `workflow.test.ts` (15): every guard, immutability, attempt exhaustion, explanations.
 - `reconcile.test.ts` (9): duplicate rules and packet assembly.
-- `audit.test.ts` (11): chain linkage, tamper and deletion detection, import bounds and schema rejection.
+- `audit.test.ts` (16): chain linkage, tamper and deletion detection, import bounds and schema rejection, strict calendar dates, imported extensions held to the statutory guards.
 - `App.test.tsx` (5): integration through the rendered UI (written after the UI as regression coverage; the engine tests were written first).
 
 ## Data handling
@@ -107,6 +107,7 @@ React 19 + TypeScript 5.9 + Vite 7; Vitest 4 with jsdom and Testing Library; fas
 - Hold semantics are simplified (a hold excludes a system for any right).
 - The audit chain is session-scoped tamper evidence, not a trusted log.
 - Single-user; no authentication or roles beyond labels in history entries.
+- `requestExtension` does not check the request stage (a closed request could be extended) and does not compare the notice date with `asOf`; the importer enforces the statutory maximum, notice window, receipt order and reason, so a file cannot carry an extension the UI would refuse.
 
 ## JD evidence (educational mapping)
 

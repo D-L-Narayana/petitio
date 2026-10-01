@@ -1,4 +1,5 @@
 import type { CaseFile, FieldRecord, Hold, RightsRequest, SystemOfRecord, SystemResult, Transition } from './types';
+import { daysBetween, maxExtensionDays, PROFILES, statutoryDueOn } from './deadline';
 
 export interface ImportLimits {
   maxBytes: number;
@@ -225,6 +226,16 @@ function parseRequest(ctx: Ctx, raw: unknown, path: string): RightsRequest | und
         reason: ctx.str(e, 'reason', `${path}.extension`) ?? '',
         notifiedOn: ctx.str(e, 'notifiedOn', `${path}.extension`, { pattern: ISO_DATE }) ?? '',
       };
+      // The import path must obey the same statutory guards as requestExtension(); an imported file is not a way around them.
+      if (receivedOn && jurisdiction && extension.notifiedOn && Number.isInteger(extension.days)) {
+        const probe = { receivedOn, jurisdiction: jurisdiction as RightsRequest['jurisdiction'] } as RightsRequest;
+        const max = maxExtensionDays(probe);
+        const statutory = statutoryDueOn(probe);
+        if (extension.days > max) ctx.errors.push(`${path}.extension.days (${extension.days}) on request ${id ?? '?'} exceeds the ${max}-day maximum for ${PROFILES[probe.jurisdiction].label} on a request received ${receivedOn}`);
+        if (daysBetween(receivedOn, extension.notifiedOn) < 0) ctx.errors.push(`${path}.extension.notifiedOn (${extension.notifiedOn}) is before the request was received (${receivedOn})`);
+        if (PROFILES[probe.jurisdiction].extensionNoticeWithinInitialWindow && daysBetween(extension.notifiedOn, statutory) < 0) ctx.errors.push(`${path}.extension.notifiedOn (${extension.notifiedOn}) is after the initial due date ${statutory}; notice must be given within the initial window`);
+      }
+      if (!extension.reason.trim()) ctx.errors.push(`${path}.extension.reason must state why the extension was taken`);
     }
   }
 

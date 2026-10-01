@@ -124,3 +124,31 @@ describe('strict dates (review finding)', () => {
     expect(parseCaseFile(JSON.stringify({ ...demo, asOf: '2026-99-99' })).ok).toBe(false);
   });
 });
+
+describe('imported extensions obey the same guards as requestExtension (sixth-Fable finding)', () => {
+  const withExt = (ext: Record<string, unknown>, pick?: (r: typeof demo.requests[number]) => boolean) => {
+    const file = JSON.parse(JSON.stringify(demo)) as typeof demo;
+    const r = file.requests.find(pick ?? ((x) => x.jurisdiction === 'EU-GDPR' && !x.extension && x.stage !== 'closed'))!;
+    (r as unknown as Record<string, unknown>)['extension'] = ext;
+    return { text: JSON.stringify(file), r };
+  };
+  it('rejects a 300-day extension on a GDPR request and names the field and the maximum', () => {
+    const { text, r } = withExt({ days: 300, reason: 'imported', notifiedOn: '2026-09-02' }, (x) => x.id === 'REQ-2026-0001' || (x.jurisdiction === 'EU-GDPR' && !x.extension && x.stage !== 'closed'));
+    const res = parseCaseFile(text);
+    expect(res.ok).toBe(false);
+    if (!res.ok) { const msg = res.errors.join(' '); expect(msg).toContain(r.id); expect(msg).toContain('extension.days'); expect(msg).toMatch(/61-day maximum/); }
+  });
+  it('rejects a notice dated before receipt, after the initial window, a blank reason and a non-integer day count', () => {
+    const base = demo.requests.find((x) => x.jurisdiction === 'EU-GDPR' && !x.extension && x.stage !== 'closed')!;
+    expect(parseCaseFile(withExt({ days: 30, reason: 'x', notifiedOn: '2020-01-01' }).text).ok).toBe(false);
+    expect(parseCaseFile(withExt({ days: 30, reason: 'x', notifiedOn: '2030-01-01' }).text).ok).toBe(false);
+    expect(parseCaseFile(withExt({ days: 30, reason: '   ', notifiedOn: base.receivedOn }).text).ok).toBe(false);
+    expect(parseCaseFile(withExt({ days: 30.5, reason: 'x', notifiedOn: base.receivedOn }).text).ok).toBe(false);
+  });
+  it('still accepts an extension within the profile maximum and round-trips it', () => {
+    const base = demo.requests.find((x) => x.jurisdiction === 'EU-GDPR' && !x.extension && x.stage !== 'closed')!;
+    const res = parseCaseFile(withExt({ days: 30, reason: 'complex request', notifiedOn: base.receivedOn }).text);
+    expect(res.ok).toBe(true);
+    if (res.ok) expect(parseCaseFile(serializeCaseFile(res.file)).ok).toBe(true);
+  });
+});
