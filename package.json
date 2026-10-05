@@ -5,13 +5,21 @@
   "description": "Educational privacy-rights request desk: deterministic deadline clock, request workflow state machine, duplicate detection, multi-system reconciliation with redaction and a hash-chained audit log. Browser-local synthetic data only.",
   "license": "MIT",
   "type": "module",
+  "engines": {
+    "node": ">=20.19 <21 || >=22.12"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "check:invariants": "node scripts/check-invariants.mjs",
+    "check:tokens": "node scripts/check-tokens.mjs",
+    "check:bundle": "node scripts/check-bundle-size.mjs",
+    "check:yaml": "node scripts/validate-yaml.mjs",
+    "verify": "npm run typecheck && npm test && npm run build && npm run check:invariants && npm run check:tokens && npm run check:bundle && npm run check:yaml"
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",

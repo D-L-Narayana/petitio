@@ -1,0 +1,8 @@
+# command: node scripts/validate-yaml.mjs
+# cwd: .
+# node: v20.20.1
+# started: 2026-10-05T04:17:40.501Z
+ok    .github/dependabot.yml (dependabot policy)
+ok    .github/workflows/verify.yml (workflow policy)
+validate-yaml: OK — 2 file(s) parsed, no policy violations
+# finished: 2026-10-05T04:17:40.548Z exit: 0

@@ -1,0 +1,26 @@
+# command: node <private-qa-harness>/browser-check.mjs --label baseline --expect baseline
+# cwd: .
+# node: v20.20.1
+# started: 2026-10-04T22:42:34.124Z
+ok   viewport desktop (1440px, light) responses=5 csp=0 
+ok   viewport tablet (768px, light) responses=5 csp=0 
+ok   viewport mobile (375px, light) responses=5 csp=0 
+ok   1 docket-loaded
+ok   2 blocked-send-to-review-explained
+ok   3 record-result-and-send-to-review
+ok   4 unjustified-hold-blocks-response
+ok   5 release-hold-prepare-response
+ok   6 reveal-redaction
+ok   7 export-packet-json
+ok   8 extension-refused-too-late
+ok   9 audit-chain-tamper-detected
+ok   10 import-rejected
+ok   11 keyboard-focus
+
+wrote <private-qa-harness>/screens/baseline-browser-check.json
+headers: 20 responses checked against 8 production headers, 0 mismatch(es)
+csp: 0 violation(s); foreign requests: 0; page/console errors in flow: 0
+viewports: desktop:ok tablet:ok mobile:ok
+flow (baseline): 11 steps, 0 failed, downloads=1
+RESULT: PASS
+# finished: 2026-10-04T22:42:46.614Z exit: 0

@@ -1,0 +1,11 @@
+# command: node scripts/check-bundle-size.mjs
+# cwd: .
+# node: v20.20.1
+# started: 2026-10-05T04:25:39.638Z
+check-bundle-size: dist/ measured against scripts/budgets.json (raw sizes; 1 kB = 1000 bytes)
+  asset        file                            size       gzip  budget  status
+  largest JS   assets/index-Ciehn5w3.js   402.95 kB  126.46 kB  420 kB  ok    
+  CSS          assets/index-B6R1rv5k.css   23.81 kB    5.33 kB   40 kB  ok    
+  dist/ total  14 files                   734.24 kB          —  760 kB  ok    
+check-bundle-size: OK — within budget (JS ≤ 420 kB, CSS ≤ 40 kB, dist ≤ 760 kB)
+# finished: 2026-10-05T04:25:39.705Z exit: 0

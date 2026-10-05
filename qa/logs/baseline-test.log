@@ -1,0 +1,25 @@
+# command: npm test
+# cwd: .
+# node: v20.20.1
+# started: 2026-10-04T22:04:46.900Z
+
+> petitio@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 .
+
+ ✓ src/engine/audit.test.ts (19 tests) 55ms
+ ✓ src/engine/workflow.test.ts (15 tests) 10ms
+ ✓ src/engine/deadline.test.ts (20 tests) 17ms
+ ✓ src/engine/reconcile.test.ts (9 tests) 14ms
+ ✓ src/App.test.tsx (5 tests) 1508ms
+     ✓ explains why sending to review is blocked and lets the analyst record the missing lookup  543ms
+     ✓ rejects an invalid pasted case file with a readable error and keeps the session  368ms
+
+ Test Files  5 passed (5)
+      Tests  68 passed (68)
+   Start at  22:04:47
+   Duration  6.32s (transform 332ms, setup 581ms, import 432ms, tests 1.60s, environment 3.01s)
+
+# finished: 2026-10-04T22:04:53.647Z exit: 0

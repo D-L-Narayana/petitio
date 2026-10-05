@@ -1,0 +1,6 @@
+# command: npm audit --audit-level=high
+# cwd: .
+# node: v20.20.1
+# started: 2026-10-05T04:24:52.000Z
+found 0 vulnerabilities
+# finished: 2026-10-05T04:24:52.861Z exit: 0

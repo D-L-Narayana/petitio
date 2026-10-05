@@ -1,5 +1,14 @@
 import type { CaseFile, FieldRecord, Hold, RightsRequest, SystemOfRecord, SystemResult, Transition } from './types';
 import { daysBetween, maxExtensionDays, PROFILES, statutoryDueOn } from './deadline';
+import { checkIntegrity } from './integrity';
+
+/** Schema marker every case file must carry. Documented in docs/casefile-schema.md. */
+export const CASEFILE_SCHEMA = 'petitio.casefile';
+/** Current (and only) schema version. v1 is additive; unknown keys are dropped; v2 is reserved. */
+export const CASEFILE_VERSION = 1;
+
+/** Notes longer than this are truncated on import (with a warning). */
+export const MAX_NOTE_LENGTH = 2_000;
 
 export interface ImportLimits {
   maxBytes: number;
@@ -19,7 +28,8 @@ export const DEFAULT_LIMITS: ImportLimits = {
 
 export type ParseResult = { ok: true; file: CaseFile; warnings: string[] } | { ok: false; errors: string[] };
 
-const JURISDICTIONS = new Set(['EU-GDPR', 'UK-GDPR', 'US-CA-CCPA']);
+/** Accepted jurisdictions are exactly the deadline profiles; adding a profile needs no change here. */
+const JURISDICTIONS = new Set(Object.keys(PROFILES));
 const TYPES = new Set(['access', 'erasure', 'rectification', 'portability', 'opt-out-sale']);
 const STAGES = new Set(['received', 'identity-check', 'verified', 'collecting', 'review', 'response-ready', 'closed', 'rejected']);
 const ACTIONS = new Set(['start-identity-check', 'identity-passed', 'identity-failed', 'begin-collection', 'record-system-result', 'send-to-review', 'apply-hold', 'release-hold', 'prepare-response', 'close', 'reject']);
@@ -250,7 +260,10 @@ function parseRequest(ctx: Ctx, raw: unknown, path: string): RightsRequest | und
       ctx.errors.push(`${path}.notes[${i}] must be a string`);
       return '';
     }
-    return n.slice(0, 2_000);
+    if (n.length > MAX_NOTE_LENGTH) {
+      ctx.warnings.push(`${id ?? '?'}: ${path}.notes[${i}] is ${n.length.toLocaleString('en-US')} characters and was truncated to ${MAX_NOTE_LENGTH.toLocaleString('en-US')}`);
+    }
+    return n.slice(0, MAX_NOTE_LENGTH);
   });
 
   if (!id || !receivedOn || !jurisdiction || !type || !stage || !requester || !identity) return undefined;
@@ -281,7 +294,9 @@ function parseRequest(ctx: Ctx, raw: unknown, path: string): RightsRequest | und
 /**
  * Parses and validates a case file. Checks size and nesting before trusting the structure,
  * validates every enum and date, rejects duplicate ids, and copies only known properties so
- * unexpected keys never flow into application state.
+ * unexpected keys never flow into application state. Once every field is individually valid the
+ * cross-field integrity rules (`checkIntegrity`) run: their errors reject the file, their warnings
+ * are returned alongside it. Never throws.
  */
 export function parseCaseFile(text: string, overrides: Partial<ImportLimits> = {}): ParseResult {
   const limits = { ...DEFAULT_LIMITS, ...overrides };
@@ -301,8 +316,8 @@ export function parseCaseFile(text: string, overrides: Partial<ImportLimits> = {
   const ctx = new Ctx(limits);
   const root = ctx.obj(raw, 'casefile');
   if (!root) return { ok: false, errors: ctx.errors };
-  ctx.str(root, 'schema', 'casefile', { enumSet: new Set(['petitio.casefile']) });
-  ctx.int(root, 'version', 'casefile', 1, 1);
+  ctx.str(root, 'schema', 'casefile', { enumSet: new Set([CASEFILE_SCHEMA]) });
+  ctx.int(root, 'version', 'casefile', CASEFILE_VERSION, CASEFILE_VERSION);
   const asOf = ctx.str(root, 'asOf', 'casefile', { pattern: ISO_DATE }) ?? '';
 
   const systems = ctx.arr(root, 'systems', 'casefile', limits.maxSystems).map((s, i): SystemOfRecord | undefined => {
@@ -329,13 +344,18 @@ export function parseCaseFile(text: string, overrides: Partial<ImportLimits> = {
   for (const r of requests) {
     if (seen.has(r.id)) ctx.errors.push(`Duplicate request id "${r.id}"`);
     seen.add(r.id);
-    for (const result of r.systemResults) {
-      if (!systems.some((s) => s.id === result.systemId)) ctx.warnings.push(`${r.id}: result for unknown system "${result.systemId}"`);
-    }
   }
 
   if (ctx.errors.length > 0) return { ok: false, errors: ctx.errors.slice(0, 50) };
-  return { ok: true, file: { schema: 'petitio.casefile', version: 1, asOf, systems, requests }, warnings: ctx.warnings };
+
+  // Every field is individually valid from here on, so the cross-field rules can trust the shape.
+  const file: CaseFile = { schema: CASEFILE_SCHEMA, version: CASEFILE_VERSION, asOf, systems, requests };
+  for (const issue of checkIntegrity(file)) {
+    if (issue.level === 'error') ctx.errors.push(`${issue.message} (${issue.path})`);
+    else ctx.warnings.push(issue.message);
+  }
+  if (ctx.errors.length > 0) return { ok: false, errors: ctx.errors.slice(0, 50) };
+  return { ok: true, file, warnings: ctx.warnings };
 }
 
 export function serializeCaseFile(file: CaseFile): string {

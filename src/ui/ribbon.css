@@ -1,0 +1,24 @@
+/*
+ * Deadline ribbon, imported once by Ribbon.tsx.
+ * Static presentation lives here; the computed widths/offsets (elapsed, statutory, extension, as-of marker,
+ * notice tick) are the only permitted inline styles and stay in Ribbon.tsx. Colours are design tokens only.
+ */
+.ribbon { display: grid; gap: 3px; }
+.ribbon-track { position: relative; height: 10px; background: var(--track); border-radius: 2px; overflow: hidden; }
+.ribbon-statutory { position: absolute; inset: 0 auto 0 0; background: var(--track-statutory); }
+.ribbon-extension { position: absolute; inset: 0 0 0 auto; background: repeating-linear-gradient(135deg, var(--track-statutory) 0 4px, var(--track-hatch) 4px 8px); }
+.ribbon-elapsed { position: absolute; inset: 0 auto 0 0; background: var(--green); }
+.ribbon-elapsed.is-at-risk { background: var(--amber); }
+.ribbon-elapsed.is-overdue { background: var(--red); }
+.ribbon-elapsed.is-closed, .ribbon-elapsed.is-rejected { background: var(--track-neutral); }
+/* Last day on which an extension notice may still be given: a dashed amber tick, drawn under the as-of marker. */
+.ribbon-notice { position: absolute; top: 0; bottom: 0; width: 2px; background: repeating-linear-gradient(to bottom, var(--amber) 0 3px, transparent 3px 5px); }
+.ribbon-today { position: absolute; top: -2px; bottom: -2px; width: 2px; background: var(--ink); }
+.ribbon-labels { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2px 10px; font-family: var(--display); font-size: 11px; color: var(--mute); }
+.ribbon-labels time { white-space: nowrap; }
+.ribbon.large .ribbon-track { height: 18px; }
+.ribbon.large .ribbon-labels { font-size: 13px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .ribbon-elapsed { transition: width 300ms ease; }
+}

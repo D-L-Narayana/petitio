@@ -1,0 +1,27 @@
+# command: npm run build
+# cwd: .
+# node: v20.20.1
+# started: 2026-10-05T04:23:45.335Z
+
+> petitio@0.1.0 build
+> tsc -b && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 132 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                                          1.00 kB │ gzip:   0.52 kB
+dist/assets/bricolage-grotesque-vietnamese-wght-normal-BUzh504Q.woff2    8.61 kB
+dist/assets/source-serif-4-vietnamese-wght-normal-D-yuW59g.woff2        13.45 kB
+dist/assets/source-serif-4-cyrillic-ext-wght-normal-cHuGMAiY.woff2      18.06 kB
+dist/assets/bricolage-grotesque-latin-ext-wght-normal-CcLUaPy7.woff2    18.67 kB
+dist/assets/source-serif-4-greek-wght-normal-ece1310W.woff2             20.23 kB
+dist/assets/source-serif-4-cyrillic-wght-normal-DwHjdM4S.woff2          36.47 kB
+dist/assets/bricolage-grotesque-latin-wght-normal-DLoelf7F.woff2        41.34 kB
+dist/assets/source-serif-4-latin-ext-wght-normal-CxNHBx-q.woff2         42.04 kB
+dist/assets/source-serif-4-latin-wght-normal-D9elroTD.woff2             50.82 kB
+dist/assets/index-B6R1rv5k.css                                          23.81 kB │ gzip:   5.33 kB
+dist/assets/index-Ciehn5w3.js                                          402.95 kB │ gzip: 126.46 kB
+✓ built in 2.81s
+# finished: 2026-10-05T04:23:57.358Z exit: 0

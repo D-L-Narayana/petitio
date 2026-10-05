@@ -1,0 +1,499 @@
+{
+  "label": "upgrade",
+  "expect": "upgrade",
+  "origin": "https://petitio.test",
+  "startedAt": "2026-10-05T04:26:09.147Z",
+  "dist": "./dist",
+  "headersApplied": {
+    "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "no-referrer",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()",
+    "Cross-Origin-Opener-Policy": "same-origin",
+    "Cross-Origin-Resource-Policy": "same-origin",
+    "Strict-Transport-Security": "max-age=63072000; includeSubDomains"
+  },
+  "bypassCSP": false,
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "colorScheme": "light",
+      "bodyBackground": "rgb(238, 241, 244)",
+      "status": 200,
+      "file": "upgrade-desktop.png",
+      "indexCsp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests",
+      "responsesChecked": 5,
+      "headerMismatches": [],
+      "cspViolations": [],
+      "foreignRequests": [],
+      "failedRequests": [],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "hosts": [
+        "petitio.test"
+      ],
+      "overflow": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "horizontalOverflow": false,
+        "overflowing": []
+      },
+      "a11y": {
+        "controls": 40,
+        "unnamed": [],
+        "statusRegions": 1,
+        "alerts": 0,
+        "h1": 1,
+        "lang": "en",
+        "title": "Petitio — privacy rights request desk",
+        "storageTouched": {
+          "local": false,
+          "session": false,
+          "idb": false,
+          "cookie": false
+        }
+      },
+      "problems": []
+    },
+    {
+      "name": "tablet",
+      "width": 768,
+      "colorScheme": "light",
+      "bodyBackground": "rgb(238, 241, 244)",
+      "status": 200,
+      "file": "upgrade-tablet.png",
+      "indexCsp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests",
+      "responsesChecked": 5,
+      "headerMismatches": [],
+      "cspViolations": [],
+      "foreignRequests": [],
+      "failedRequests": [],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "hosts": [
+        "petitio.test"
+      ],
+      "overflow": {
+        "scrollWidth": 768,
+        "clientWidth": 768,
+        "horizontalOverflow": false,
+        "overflowing": []
+      },
+      "a11y": {
+        "controls": 40,
+        "unnamed": [],
+        "statusRegions": 1,
+        "alerts": 0,
+        "h1": 1,
+        "lang": "en",
+        "title": "Petitio — privacy rights request desk",
+        "storageTouched": {
+          "local": false,
+          "session": false,
+          "idb": false,
+          "cookie": false
+        }
+      },
+      "problems": []
+    },
+    {
+      "name": "mobile",
+      "width": 375,
+      "colorScheme": "light",
+      "bodyBackground": "rgb(238, 241, 244)",
+      "status": 200,
+      "file": "upgrade-mobile.png",
+      "indexCsp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests",
+      "responsesChecked": 5,
+      "headerMismatches": [],
+      "cspViolations": [],
+      "foreignRequests": [],
+      "failedRequests": [],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "hosts": [
+        "petitio.test"
+      ],
+      "overflow": {
+        "scrollWidth": 375,
+        "clientWidth": 375,
+        "horizontalOverflow": false,
+        "overflowing": [
+          "TABLE.",
+          "THEAD.",
+          "TR.",
+          "TH.",
+          "TH.",
+          "TBODY.",
+          "TR.",
+          "TD.",
+          "TD.",
+          "DIV.",
+          "SPAN.mono",
+          "DIV.",
+          "SPAN.mono"
+        ]
+      },
+      "a11y": {
+        "controls": 40,
+        "unnamed": [],
+        "statusRegions": 1,
+        "alerts": 0,
+        "h1": 1,
+        "lang": "en",
+        "title": "Petitio — privacy rights request desk",
+        "storageTouched": {
+          "local": false,
+          "session": false,
+          "idb": false,
+          "cookie": false
+        }
+      },
+      "problems": []
+    },
+    {
+      "name": "desktop-dark",
+      "width": 1440,
+      "colorScheme": "dark",
+      "bodyBackground": "rgb(15, 22, 32)",
+      "status": 200,
+      "file": "upgrade-desktop-dark.png",
+      "indexCsp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests",
+      "responsesChecked": 5,
+      "headerMismatches": [],
+      "cspViolations": [],
+      "foreignRequests": [],
+      "failedRequests": [],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "hosts": [
+        "petitio.test"
+      ],
+      "overflow": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "horizontalOverflow": false,
+        "overflowing": []
+      },
+      "a11y": {
+        "controls": 40,
+        "unnamed": [],
+        "statusRegions": 1,
+        "alerts": 0,
+        "h1": 1,
+        "lang": "en",
+        "title": "Petitio — privacy rights request desk",
+        "storageTouched": {
+          "local": false,
+          "session": false,
+          "idb": false,
+          "cookie": false
+        }
+      },
+      "problems": []
+    }
+  ],
+  "flow": {
+    "steps": [
+      {
+        "step": 1,
+        "label": "docket-loaded",
+        "only": "both",
+        "firstRow": "REQ-2026-0398",
+        "heading": "Docket · 12 of 12",
+        "totalRows": 12,
+        "summary": "1 overdue1 at risk7 on track2 closed1 rejected1 possible duplicate",
+        "ok": true,
+        "file": "upgrade-flow-01-docket-loaded.png"
+      },
+      {
+        "step": 2,
+        "label": "search-filters-docket",
+        "only": "upgrade",
+        "rowsMatchingLark": [
+          "REQ-2026-0411",
+          "REQ-2026-0416"
+        ],
+        "heading": "Docket · 2 of 12",
+        "ok": true,
+        "file": "upgrade-flow-02-search-filters-docket.png"
+      },
+      {
+        "step": 3,
+        "label": "sort-by-received",
+        "only": "upgrade",
+        "firstByReceived": "REQ-2026-0375",
+        "ok": true,
+        "file": "upgrade-flow-03-sort-by-received.png"
+      },
+      {
+        "step": 4,
+        "label": "blocked-send-to-review-explained",
+        "only": "both",
+        "blocked": "Lookups still outstanding for: support.",
+        "ok": true,
+        "file": "upgrade-flow-04-blocked-send-to-review-explained.png"
+      },
+      {
+        "step": 5,
+        "label": "record-result-and-send-to-review",
+        "only": "both",
+        "status": "REQ-2026-0411: send-to-review recorded. Stage is now review.",
+        "focused": "case-title",
+        "ok": true,
+        "file": "upgrade-flow-05-record-result-and-send-to-review.png"
+      },
+      {
+        "step": 6,
+        "label": "unjustified-hold-blocks-response",
+        "only": "both",
+        "blocked": "Holds without a written justification: HOLD-0411-1.",
+        "ok": true,
+        "file": "upgrade-flow-06-unjustified-hold-blocks-response.png"
+      },
+      {
+        "step": 7,
+        "label": "duplicate-hold-refused",
+        "only": "upgrade",
+        "holdFormOptions": [
+          "Ledgerly Billing (synthetic)",
+          "Helpdesk Tickets (synthetic)"
+        ],
+        "ok": true,
+        "file": "upgrade-flow-07-duplicate-hold-refused.png"
+      },
+      {
+        "step": 8,
+        "label": "release-hold-prepare-response",
+        "only": "both",
+        "status": "REQ-2026-0411: prepare-response recorded. Stage is now response-ready.",
+        "redactions": 1,
+        "packetExcerpt": "Proposed actions (simulated)SystemActionReasoncrmdisclose—billingdisclose—",
+        "ok": true,
+        "file": "upgrade-flow-08-release-hold-prepare-response.png"
+      },
+      {
+        "step": 9,
+        "label": "reveal-redaction",
+        "only": "both",
+        "revealed": 1,
+        "ok": true,
+        "file": "upgrade-flow-09-reveal-redaction.png"
+      },
+      {
+        "step": 10,
+        "label": "export-packet-json",
+        "only": "both",
+        "filename": "REQ-2026-0411-response-packet.json",
+        "partial": true,
+        "redactions": 1,
+        "actions": 2,
+        "ok": true,
+        "file": "upgrade-flow-10-export-packet-json.png"
+      },
+      {
+        "step": 11,
+        "label": "export-packet-markdown-html",
+        "only": "upgrade",
+        "markdown": "REQ-2026-0411-response-packet.md",
+        "html": "REQ-2026-0411-response-packet.html",
+        "markdownBytes": 1038,
+        "htmlBytes": 3917,
+        "ok": true,
+        "file": "upgrade-flow-11-export-packet-markdown-html.png"
+      },
+      {
+        "step": 12,
+        "label": "extension-ineligible-explained",
+        "only": "upgrade",
+        "reason": "Extension not available: Extension notice dated 2026-10-01 is after the initial due date 2026-09-27; EU GDPR requires notice within the initial window.",
+        "ok": true,
+        "file": "upgrade-flow-12-extension-ineligible-explained.png"
+      },
+      {
+        "step": 13,
+        "label": "extension-recorded",
+        "only": "upgrade",
+        "status": "REQ-2026-0415: extension recorded; due date moved to 2026-12-15.",
+        "ok": true,
+        "file": "upgrade-flow-13-extension-recorded.png"
+      },
+      {
+        "step": 14,
+        "label": "closed-request-outcome",
+        "only": "upgrade",
+        "late": "Closed 7 days late",
+        "onTime": "Closed on time",
+        "ok": true,
+        "file": "upgrade-flow-14-closed-request-outcome.png"
+      },
+      {
+        "step": 15,
+        "label": "audit-chain-tamper-detected",
+        "only": "both",
+        "file": "upgrade-flow-15-audit-chain-tamper-detected.png",
+        "intact": "Chain intact: 6 entries, every hash recomputed and linked.",
+        "broken": "Chain broken at entry 1: the stored hash or previous-hash link does not match the recomputed value.",
+        "ok": true
+      },
+      {
+        "step": 16,
+        "label": "verify-exported-log",
+        "only": "upgrade",
+        "file": "upgrade-flow-16-verify-exported-log.png",
+        "filename": "petitio-audit-log.json",
+        "entries": 6,
+        "intact": "Imported log: 6 entries, chain intact.",
+        "broken": "Imported log: chain broken at entry 1.",
+        "ok": true
+      },
+      {
+        "step": 17,
+        "label": "import-rejected",
+        "only": "both",
+        "file": "upgrade-flow-17-import-rejected.png",
+        "errors": "Import rejected. Fix these and try again:casefile.schema \"nope\" is not an allowed valuecasefile.systems must list at least one system of recordcasefile.requests[0].receivedOn is requiredcasefile.requests[0].jurisdiction is requiredcasefile.requests[0].type is requiredcasefile.requests[0].stage \"tele",
+        "ok": true
+      },
+      {
+        "step": 18,
+        "label": "validate-only-and-sample",
+        "only": "upgrade",
+        "file": "upgrade-flow-18-validate-only-and-sample.png",
+        "sample": "petitio-sample-casefile.json",
+        "ready": "Ready to import: 1 requests, 1 systems, as of 2026-10-01",
+        "ok": true
+      },
+      {
+        "step": 19,
+        "label": "export-import-roundtrip",
+        "only": "upgrade",
+        "filename": "petitio-casefile-2026-10-01.json",
+        "requests": 12,
+        "status": "Imported 12 requests across 3 systems (as of 2026-10-01).",
+        "ok": true,
+        "file": "upgrade-flow-19-export-import-roundtrip.png"
+      },
+      {
+        "step": 20,
+        "label": "export-csv",
+        "only": "upgrade",
+        "filename": "petitio-docket-2026-10-01.csv",
+        "rows": 12,
+        "firstRow": "REQ-2026-0398,2026-08-27,EU-GDPR,erasure,review,overdue,2026-09-27,2026-09-27,-4,false,",
+        "ok": true,
+        "file": "upgrade-flow-20-export-csv.png"
+      },
+      {
+        "step": 21,
+        "label": "theme-toggle",
+        "only": "upgrade",
+        "lightBackground": "rgb(238, 241, 244)",
+        "darkBackground": "rgb(15, 22, 32)",
+        "storageTouched": {
+          "local": false,
+          "session": false,
+          "idb": false,
+          "cookie": false
+        },
+        "ok": true,
+        "file": "upgrade-flow-21-theme-toggle.png"
+      },
+      {
+        "step": 22,
+        "label": "print-media",
+        "only": "upgrade",
+        "display": {
+          ".masthead": "none",
+          ".docket": "none",
+          ".status-line": "none",
+          ".detail": "grid"
+        },
+        "ok": true,
+        "file": "upgrade-flow-22-print-media.png"
+      },
+      {
+        "step": 23,
+        "label": "keyboard-focus",
+        "only": "both",
+        "focusedAfterArrowDown": "REQ-2026-0399",
+        "focusedAfterEnd": "REQ-2026-0390",
+        "focusedAfterHome": "REQ-2026-0398",
+        "tabStops": 1,
+        "ok": true,
+        "file": "upgrade-flow-23-keyboard-focus.png"
+      }
+    ],
+    "pageErrors": [],
+    "consoleErrors": [],
+    "failedRequests": [],
+    "foreignRequests": [],
+    "hosts": [
+      "petitio.test"
+    ],
+    "cspViolations": [],
+    "headerChecks": {
+      "responses": 5,
+      "mismatches": []
+    }
+  },
+  "downloads": [
+    {
+      "filename": "REQ-2026-0411-response-packet.json",
+      "bytes": 1104
+    },
+    {
+      "filename": "REQ-2026-0411-response-packet.md",
+      "bytes": 1038
+    },
+    {
+      "filename": "REQ-2026-0411-response-packet.html",
+      "bytes": 3917
+    },
+    {
+      "filename": "petitio-audit-log.json",
+      "bytes": 2358
+    },
+    {
+      "filename": "petitio-sample-casefile.json",
+      "bytes": 22215
+    },
+    {
+      "filename": "petitio-casefile-2026-10-01.json",
+      "bytes": 23978
+    },
+    {
+      "filename": "petitio-docket-2026-10-01.csv",
+      "bytes": 1257
+    }
+  ],
+  "finalA11y": {
+    "controls": 39,
+    "unnamed": [],
+    "statusRegions": 1,
+    "alerts": 0,
+    "h1": 1,
+    "lang": "en",
+    "title": "Petitio — privacy rights request desk",
+    "storageTouched": {
+      "local": false,
+      "session": false,
+      "idb": false,
+      "cookie": false
+    }
+  },
+  "finishedAt": "2026-10-05T04:26:29.230Z",
+  "verdict": {
+    "failedSteps": 0,
+    "viewportProblems": 0,
+    "flowErrors": 0,
+    "cspViolations": 0,
+    "headerMismatches": 0,
+    "foreignRequests": 0,
+    "responsesHeaderChecked": 25,
+    "unnamedControlsAtEnd": 0,
+    "downloads": 7
+  }
+}

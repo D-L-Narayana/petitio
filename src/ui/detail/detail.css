@@ -1,0 +1,38 @@
+/*
+ * Case detail panels (src/ui/detail/*), imported once by CaseDetail.tsx.
+ * Every former inline style={{…}} in the case detail is a class here; colours are design tokens only (PLAN §4.2).
+ * Shared primitives (.panel, .panel-body, .form*, .notice*, .badge*, .tag*, .history) stay in styles.css.
+ */
+
+/* ----- header ----- */
+.citation { margin: 0; color: var(--mute); font-size: 13px; }
+.clock-summary .clock-overdue { color: var(--red); }
+.clock-summary .badge { align-self: center; }
+
+/* ----- prose blocks (former margin: 0 / color: var(--mute)) ----- */
+.muted-note { margin: 0; color: var(--mute); }
+.flush { margin: 0; }
+.identity-note { margin: 10px 0 0; font-size: 13.5px; color: var(--mute); }
+.notes-title { margin-top: 14px; font-size: 13px; color: var(--mute); }
+.notes-list { margin: 6px 0 0; padding-left: 18px; }
+
+/* ----- spacing inside fieldsets and hold cards (former marginTop) ----- */
+.fieldset-gap { margin-top: 10px; }
+.hold-release { margin-top: 6px; }
+
+/* ----- stacked panel bodies (former display: grid; gap) ----- */
+.panel-body.stack { display: grid; gap: 12px; }
+.panel-body.stack-lg { display: grid; gap: 14px; }
+
+/* ----- systems of record ----- */
+.table-scroll { overflow-x: auto; }
+.system-name { font-family: var(--display); }
+.system-desc { color: var(--mute); font-size: 13px; }
+
+/* ----- response packet ----- */
+.field-name { text-transform: none; letter-spacing: 0; }
+.packet-summary { margin: 0; font-size: 14px; }
+.packet-actions caption { caption-side: top; text-align: left; padding: 0 0 6px; font-family: var(--display); font-size: 12.5px; font-weight: 600; color: var(--ink-2); }
+
+/* ----- extension ----- */
+.ext-hint time { white-space: nowrap; }

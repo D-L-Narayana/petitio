@@ -3,7 +3,9 @@ dist/
 coverage/
 .vite/
 .vercel/
+*.tsbuildinfo
 *.log
+!qa/logs/*.log
 .DS_Store
 .env
 .env.*

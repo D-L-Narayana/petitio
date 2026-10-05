@@ -1,0 +1,6 @@
+# command: node scripts/check-invariants.mjs
+# cwd: .
+# node: v20.20.1
+# started: 2026-10-05T04:25:41.553Z
+check-invariants: OK — 37 file(s) scanned under src (tests skipped); no forbidden APIs; pure zone: engine/**, state/session.ts, state/auditQueue.ts (missing paths skipped)
+# finished: 2026-10-05T04:25:41.633Z exit: 0

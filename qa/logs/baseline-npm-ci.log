@@ -1,0 +1,10 @@
+# command: npm ci --ignore-scripts --no-fund --no-audit
+# cwd: .
+# node: v20.20.1 npm: 10.8.2
+# started: 2026-10-04T22:02Z (single shared install; workers do not reinstall)
+# note: --ignore-scripts skips the only two install scripts in the lockfile (esbuild, fsevents). esbuild's
+#       postinstall merely validates the platform binary; node_modules/@esbuild/linux-x64/bin/esbuild is present
+#       as a regular dependency, and `npm run build` (vite) completed in 03-baseline-build.log without it.
+
+added 196 packages in 13s
+# finished exit: 0

@@ -1,0 +1,72 @@
+/*
+ * Docket v2 additions: clock summary strip, search box, sort select, action row and the
+ * roving-tabindex focus ring. The base docket classes (.docket, .docket-head, .filters,
+ * .docket-list, .docket-row, .badge-*) stay in src/styles.css; this file only adds to them.
+ * Colours come exclusively from the tokens in src/theme/tokens.css (PLAN §4.2).
+ */
+
+/* ----- clock summary strip ----- */
+.docket-summary {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+}
+.docket-summary li {
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 1px 7px;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+  background: var(--panel-2);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.docket-summary .is-overdue { background: var(--red-bg); color: var(--red); border-color: var(--red-line); }
+.docket-summary .is-at-risk { background: var(--amber-bg); color: var(--amber); border-color: var(--amber-line); }
+.docket-summary .is-on-track { background: var(--green-bg); color: var(--green); border-color: var(--green-line); }
+.docket-summary .is-duplicates { background: var(--violet-bg); color: var(--violet); border-color: var(--violet-line); }
+
+/* ----- search ----- */
+.docket-search { margin-top: 8px; }
+.docket-search input[type='search'] {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--panel-2);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 13px;
+}
+.docket-search input[type='search']::placeholder { color: var(--mute); }
+
+/* ----- clear / export -----
+   Rendered after the list so the rows come first in DOM and tab order; sticks to the bottom of the
+   viewport while the docket is in view so the two actions stay reachable in a long docket. */
+.docket-actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--rule);
+  background: var(--panel);
+}
+.docket-list li:last-child .docket-row { border-bottom: 0; }
+
+/* ----- keyboard focus on rows -----
+   The global ring (--focus) is drawn outside the element and is clipped by the scrolling list,
+   so rows use an inset ring; the selected row keeps its indigo bar underneath it. */
+.docket-row { scroll-margin-bottom: 56px; } /* keeps a keyboard-focused last row clear of the sticky action bar */
+.docket-row:focus-visible { box-shadow: inset 0 0 0 2px var(--indigo); }
+.docket-row[aria-current='true']:focus-visible { box-shadow: inset 3px 0 0 var(--indigo), inset 0 0 0 2px var(--indigo); }
+
+@media print {
+  .docket-summary, .docket-search, .docket-actions { display: none; }
+}

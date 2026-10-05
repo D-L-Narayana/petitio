@@ -1,0 +1,305 @@
+{
+  "label": "baseline",
+  "expect": "baseline",
+  "origin": "https://petitio.test",
+  "startedAt": "2026-10-04T22:42:34.597Z",
+  "dist": "./dist",
+  "headersApplied": {
+    "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "no-referrer",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()",
+    "Cross-Origin-Opener-Policy": "same-origin",
+    "Cross-Origin-Resource-Policy": "same-origin",
+    "Strict-Transport-Security": "max-age=63072000; includeSubDomains"
+  },
+  "bypassCSP": false,
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "colorScheme": "light",
+      "bodyBackground": "rgb(238, 241, 244)",
+      "status": 200,
+      "file": "baseline-desktop.png",
+      "indexCsp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests",
+      "responsesChecked": 5,
+      "headerMismatches": [],
+      "cspViolations": [],
+      "foreignRequests": [],
+      "failedRequests": [],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "hosts": [
+        "petitio.test"
+      ],
+      "overflow": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "horizontalOverflow": false,
+        "overflowing": []
+      },
+      "a11y": {
+        "controls": 32,
+        "unnamed": [],
+        "statusRegions": 1,
+        "alerts": 0,
+        "h1": 1,
+        "lang": "en",
+        "title": "Petitio — privacy rights request desk",
+        "storageTouched": {
+          "local": false,
+          "session": false,
+          "idb": false,
+          "cookie": false
+        }
+      },
+      "problems": []
+    },
+    {
+      "name": "tablet",
+      "width": 768,
+      "colorScheme": "light",
+      "bodyBackground": "rgb(238, 241, 244)",
+      "status": 200,
+      "file": "baseline-tablet.png",
+      "indexCsp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests",
+      "responsesChecked": 5,
+      "headerMismatches": [],
+      "cspViolations": [],
+      "foreignRequests": [],
+      "failedRequests": [],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "hosts": [
+        "petitio.test"
+      ],
+      "overflow": {
+        "scrollWidth": 768,
+        "clientWidth": 768,
+        "horizontalOverflow": false,
+        "overflowing": [
+          "LI.rail-step",
+          "SPAN.rail-node "
+        ]
+      },
+      "a11y": {
+        "controls": 32,
+        "unnamed": [],
+        "statusRegions": 1,
+        "alerts": 0,
+        "h1": 1,
+        "lang": "en",
+        "title": "Petitio — privacy rights request desk",
+        "storageTouched": {
+          "local": false,
+          "session": false,
+          "idb": false,
+          "cookie": false
+        }
+      },
+      "problems": []
+    },
+    {
+      "name": "mobile",
+      "width": 375,
+      "colorScheme": "light",
+      "bodyBackground": "rgb(238, 241, 244)",
+      "status": 200,
+      "file": "baseline-mobile.png",
+      "indexCsp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests",
+      "responsesChecked": 5,
+      "headerMismatches": [],
+      "cspViolations": [],
+      "foreignRequests": [],
+      "failedRequests": [],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "hosts": [
+        "petitio.test"
+      ],
+      "overflow": {
+        "scrollWidth": 375,
+        "clientWidth": 375,
+        "horizontalOverflow": false,
+        "overflowing": [
+          "LI.rail-step",
+          "SPAN.rail-node done",
+          "LI.rail-step",
+          "SPAN.rail-link done",
+          "SPAN.rail-node current",
+          "LI.rail-step",
+          "SPAN.rail-link ",
+          "SPAN.rail-node ",
+          "LI.rail-step",
+          "SPAN.rail-link ",
+          "SPAN.rail-node ",
+          "TABLE.",
+          "THEAD."
+        ]
+      },
+      "a11y": {
+        "controls": 32,
+        "unnamed": [],
+        "statusRegions": 1,
+        "alerts": 0,
+        "h1": 1,
+        "lang": "en",
+        "title": "Petitio — privacy rights request desk",
+        "storageTouched": {
+          "local": false,
+          "session": false,
+          "idb": false,
+          "cookie": false
+        }
+      },
+      "problems": []
+    }
+  ],
+  "flow": {
+    "steps": [
+      {
+        "step": 1,
+        "label": "docket-loaded",
+        "only": "both",
+        "firstRow": "REQ-2026-0398",
+        "heading": "Docket · 9 of 9",
+        "totalRows": 9,
+        "ok": true,
+        "file": "baseline-flow-01-docket-loaded.png"
+      },
+      {
+        "step": 2,
+        "label": "blocked-send-to-review-explained",
+        "only": "both",
+        "blocked": "Lookups still outstanding for: support.",
+        "ok": true,
+        "file": "baseline-flow-02-blocked-send-to-review-explained.png"
+      },
+      {
+        "step": 3,
+        "label": "record-result-and-send-to-review",
+        "only": "both",
+        "status": "REQ-2026-0411: send-to-review recorded. Stage is now review.",
+        "focused": "BODY",
+        "ok": true,
+        "file": "baseline-flow-03-record-result-and-send-to-review.png"
+      },
+      {
+        "step": 4,
+        "label": "unjustified-hold-blocks-response",
+        "only": "both",
+        "blocked": "Holds without a written justification: HOLD-0411-1.",
+        "ok": true,
+        "file": "baseline-flow-04-unjustified-hold-blocks-response.png"
+      },
+      {
+        "step": 5,
+        "label": "release-hold-prepare-response",
+        "only": "both",
+        "status": "REQ-2026-0411: prepare-response recorded. Stage is now response-ready.",
+        "redactions": 1,
+        "ok": true,
+        "file": "baseline-flow-05-release-hold-prepare-response.png"
+      },
+      {
+        "step": 6,
+        "label": "reveal-redaction",
+        "only": "both",
+        "revealed": 1,
+        "ok": true,
+        "file": "baseline-flow-06-reveal-redaction.png"
+      },
+      {
+        "step": 7,
+        "label": "export-packet-json",
+        "only": "both",
+        "filename": "REQ-2026-0411-response-packet.json",
+        "partial": true,
+        "redactions": 1,
+        "actions": null,
+        "ok": true,
+        "file": "baseline-flow-07-export-packet-json.png"
+      },
+      {
+        "step": 8,
+        "label": "extension-refused-too-late",
+        "only": "baseline",
+        "refusal": "Refused. EXTENSION_TOO_LATE: Extension notice dated 2026-12-01 is after the initial due date 2026-09-27; EU GDPR requires notice within the initial window.",
+        "ok": true,
+        "file": "baseline-flow-08-extension-refused-too-late.png"
+      },
+      {
+        "step": 9,
+        "label": "audit-chain-tamper-detected",
+        "only": "both",
+        "file": "baseline-flow-09-audit-chain-tamper-detected.png",
+        "intact": "Chain intact: 6 entries, every hash recomputed and linked.",
+        "broken": "Chain broken at entry 1: the stored hash or previous-hash link does not match the recomputed value.",
+        "ok": true
+      },
+      {
+        "step": 10,
+        "label": "import-rejected",
+        "only": "both",
+        "file": "baseline-flow-10-import-rejected.png",
+        "errors": "Import rejected. Fix these and try again:casefile.schema \"nope\" is not an allowed valuecasefile.systems must list at least one system of recordcasefile.requests[0].receivedOn is requiredcasefile.requests[0].jurisdiction is requiredcasefile.requests[0].type is requiredcasefile.requests[0].stage \"tele",
+        "ok": true
+      },
+      {
+        "step": 11,
+        "label": "keyboard-focus",
+        "only": "both",
+        "focusedAfterArrowDown": "REQ-2026-0398",
+        "ok": true,
+        "file": "baseline-flow-11-keyboard-focus.png"
+      }
+    ],
+    "pageErrors": [],
+    "consoleErrors": [],
+    "failedRequests": [],
+    "foreignRequests": [],
+    "hosts": [
+      "petitio.test"
+    ],
+    "cspViolations": [],
+    "headerChecks": {
+      "responses": 5,
+      "mismatches": []
+    }
+  },
+  "downloads": [
+    {
+      "filename": "REQ-2026-0411-response-packet.json",
+      "bytes": 849
+    }
+  ],
+  "finalA11y": {
+    "controls": 32,
+    "unnamed": [],
+    "statusRegions": 1,
+    "alerts": 1,
+    "h1": 1,
+    "lang": "en",
+    "title": "Petitio — privacy rights request desk",
+    "storageTouched": {
+      "local": false,
+      "session": false,
+      "idb": false,
+      "cookie": false
+    }
+  },
+  "finishedAt": "2026-10-04T22:42:46.604Z",
+  "verdict": {
+    "failedSteps": 0,
+    "viewportProblems": 0,
+    "flowErrors": 0,
+    "cspViolations": 0,
+    "headerMismatches": 0,
+    "foreignRequests": 0,
+    "responsesHeaderChecked": 20,
+    "unnamedControlsAtEnd": 0,
+    "downloads": 1
+  }
+}

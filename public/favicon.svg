@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-labelledby="t">
+  <title id="t">Petitio</title>
+  <!-- Original mark: a bold "P" above a deadline ribbon (track, elapsed portion, as-of marker). -->
+  <rect width="32" height="32" rx="7" fill="#1b2432"/>
+  <path fill="#f3f5f8" fill-rule="evenodd" d="M8 6h9a4.5 4.5 0 0 1 0 9h-6v2H8V6zm3 2.5v4h5.5a2 2 0 0 0 0-4H11z"/>
+  <rect x="8" y="21" width="16" height="4" rx="2" fill="#55657a"/>
+  <rect x="8" y="21" width="10" height="4" rx="2" fill="#5fd3a5"/>
+  <rect x="17" y="19.5" width="2" height="7" rx="1" fill="#f3f5f8"/>
+</svg>

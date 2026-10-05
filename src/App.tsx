@@ -1,17 +1,20 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import demoJson from './fixtures/demo-casefile.json';
-import type { AuditEntry, CaseFile, RightsRequest } from './engine/types';
-import { WorkflowError } from './engine/types';
+import type { CaseFile, DocketFilters } from './engine/types';
+import type { SessionEvent } from './state/session';
 import { parseCaseFile, serializeCaseFile } from './engine/casefile';
-import { assessDeadline, requestExtension } from './engine/deadline';
+import { extensionEligibility } from './engine/deadline';
 import { findDuplicates } from './engine/duplicates';
-import { transition } from './engine/workflow';
-import { appendEntry } from './engine/audit';
+import { buildDocket, docketToCsv } from './engine/docket';
+import { buildResponsePacket } from './engine/reconcile';
+import { packetToHtml, packetToMarkdown } from './engine/exports';
+import { useSession } from './state/useSession';
 import { Docket } from './ui/Docket';
-import { CaseDetail, type ActionRequest } from './ui/CaseDetail';
+import { CaseDetail } from './ui/CaseDetail';
 import { AuditDialog } from './ui/AuditDialog';
 import { ImportDialog } from './ui/ImportDialog';
-import { downloadText } from './ui/download';
+import { downloadHtml, downloadText, safeFilename } from './ui/download';
+import { ThemeToggle } from './theme/ThemeToggle';
 
 function loadDemo(): CaseFile {
   const parsed = parseCaseFile(JSON.stringify(demoJson));
@@ -20,91 +23,47 @@ function loadDemo(): CaseFile {
 }
 
 const ACTOR = 'analyst.demo';
+const DEMO_SELECTED = 'REQ-2026-0398';
+const now = () => new Date().toISOString();
 
+/**
+ * Composition root. Session state and the audit chain live in `useSession` (pure reducer + ordered audit queue);
+ * the docket is derived by `buildDocket`; every panel below receives engine results, never engine internals.
+ */
 export function App() {
-  const [file, setFile] = useState<CaseFile>(loadDemo);
-  const [selectedId, setSelectedId] = useState<string | null>(() => 'REQ-2026-0398');
-  const [filters, setFilters] = useState({ jurisdiction: '', type: '', status: '' });
-  const [log, setLog] = useState<AuditEntry[]>([]);
-  const [status, setStatus] = useState<string>('Demo case file loaded. All data is synthetic; state lives in memory and resets on refresh.');
-  const [error, setError] = useState<string | null>(null);
-  const [source, setSource] = useState<'demo' | 'imported'>('demo');
+  const [demo] = useState(loadDemo);
+  const { state, log, dispatch, selected, auditFailures } = useSession(demo, { actor: ACTOR, now }, DEMO_SELECTED);
+  const { file, filters, status, error, source } = state;
 
   const duplicates = useMemo(() => findDuplicates(file.requests, 30), [file.requests]);
+  const { rows, summary } = useMemo(() => buildDocket(file, duplicates, filters), [file, duplicates, filters]);
+  // Today's fallback: with nothing (or a vanished id) selected, the detail pane shows the first visible docket row.
+  const current = selected ?? rows[0]?.request ?? null;
+  const eligibility = useMemo(() => (current ? extensionEligibility(current, file.asOf) : undefined), [current, file.asOf]);
 
-  const docket = useMemo(() => {
-    const items = file.requests.map((request) => ({ request, assessment: assessDeadline(request, file.asOf) }));
-    const rank: Record<string, number> = { overdue: 0, 'at-risk': 1, 'on-track': 2, closed: 3, rejected: 4 };
-    items.sort((a, b) => (rank[a.assessment.status]! - rank[b.assessment.status]!) || a.assessment.daysRemaining - b.assessment.daysRemaining || a.request.id.localeCompare(b.request.id));
-    return items.filter(({ request, assessment }) => {
-      if (filters.jurisdiction && request.jurisdiction !== filters.jurisdiction) return false;
-      if (filters.type && request.type !== filters.type) return false;
-      if (filters.status === 'open') return assessment.status !== 'closed' && assessment.status !== 'rejected';
-      if (filters.status && assessment.status !== filters.status) return false;
-      return true;
-    });
-  }, [file, filters]);
-
-  const selected = file.requests.find((r) => r.id === selectedId) ?? docket[0]?.request ?? null;
-
-  const audit = useCallback(async (requestId: string, action: string, detail: string) => {
-    const next = await appendEntry(log, { at: new Date().toISOString(), actor: ACTOR, requestId, action, detail });
-    setLog(next);
-  }, [log]);
-
-  function replace(updated: RightsRequest) {
-    setFile((f) => ({ ...f, requests: f.requests.map((r) => (r.id === updated.id ? updated : r)) }));
+  // The reducer acts on `selectedId`; when the pane is showing the fallback row, select it first so the two
+  // synchronous dispatches compose and the action lands on the request the analyst is looking at.
+  function act(event: SessionEvent) {
+    if (!selected && current) dispatch({ type: 'select', id: current.id });
+    dispatch(event);
   }
 
-  async function onAction(req: ActionRequest) {
-    if (!selected) return;
-    setError(null);
-    try {
-      const next = transition(selected, req.action, { at: `${file.asOf}T12:00:00Z`, actor: ACTOR, ...(req.note ? { note: req.note } : {}), payload: req.payload }, file.systems);
-      replace(next);
-      const detail = next.history[next.history.length - 1]?.note ?? `${selected.stage} → ${next.stage}`;
-      await audit(selected.id, req.action, detail);
-      setStatus(`${selected.id}: ${req.action} recorded. Stage is now ${next.stage}.`);
-    } catch (e) {
-      if (e instanceof WorkflowError) {
-        setError(`${e.code}: ${e.message}`);
-        await audit(selected.id, `${req.action} (refused)`, e.message);
-      } else throw e;
-    }
+  // A refusal is "CODE: message"; the only other error text is the audit-queue failure (lead finding F1).
+  const errorPrefix = error && /^[A-Z_]+: /.test(error) ? 'Refused.' : 'Not recorded.';
+
+  function exportPacket(format: 'markdown' | 'html') {
+    if (!current) return;
+    const packet = buildResponsePacket(current, file.asOf);
+    const base = safeFilename(`${current.id}-response-packet`);
+    if (format === 'markdown') downloadText(`${base}.md`, packetToMarkdown(packet, current, file.systems), 'text/markdown');
+    else downloadHtml(`${base}.html`, packetToHtml(packet, current, file.systems));
   }
 
-  async function onExtend(input: { reason: string; notifiedOn: string; days?: number }) {
-    if (!selected) return;
-    setError(null);
-    try {
-      const next = requestExtension(selected, input);
-      replace(next);
-      await audit(selected.id, 'extension', `${next.extension?.days} days; notified ${input.notifiedOn}`);
-      setStatus(`${selected.id}: extension recorded; due date moved to ${assessDeadline(next, file.asOf).effectiveDueOn}.`);
-    } catch (e) {
-      if (e instanceof WorkflowError) {
-        setError(`${e.code}: ${e.message}`);
-        await audit(selected.id, 'extension (refused)', e.message);
-      } else throw e;
-    }
-  }
-
-  function onImport(next: CaseFile, warnings: string[]) {
-    setFile(next);
-    setSource('imported');
-    setSelectedId(next.requests[0]?.id ?? null);
-    setError(null);
-    setStatus(`Imported ${next.requests.length} requests across ${next.systems.length} systems (as of ${next.asOf}).${warnings.length ? ` ${warnings.length} warning(s): ${warnings.slice(0, 3).join('; ')}` : ''}`);
-    void audit('—', 'import', `${next.requests.length} requests`);
-  }
-
-  function reset() {
-    setFile(loadDemo());
-    setSource('demo');
-    setSelectedId('REQ-2026-0398');
-    setError(null);
-    setStatus('Demo case file reloaded.');
-  }
+  // Rebuilt every render on purpose: the handlers must see the latest request and holds, not a memoised snapshot.
+  const extraExports = [
+    { label: 'Export packet Markdown', onClick: () => exportPacket('markdown') },
+    { label: 'Export packet HTML', onClick: () => exportPacket('html') },
+  ];
 
   return (
     <>
@@ -115,22 +74,41 @@ export function App() {
         </div>
         <div className="toolbar" role="toolbar" aria-label="Case file controls">
           <label>As-of date
-            <input type="date" value={file.asOf} onChange={(e) => { if (e.target.value) setFile((f) => ({ ...f, asOf: e.target.value })); }} aria-describedby="asof-help" />
+            <input type="date" value={file.asOf} onChange={(e) => dispatch({ type: 'set-as-of', asOf: e.target.value })} aria-describedby="asof-help" />
           </label>
           <span id="asof-help" className="sr-only">Deadlines are calculated relative to this date so the demo stays deterministic.</span>
-          <ImportDialog onImport={onImport} />
+          <ImportDialog onImport={(next, warnings) => dispatch({ type: 'import', file: next, warnings })} />
           <button type="button" className="btn btn-ghost" onClick={() => downloadText(`petitio-casefile-${file.asOf}.json`, serializeCaseFile(file))}>Export case file</button>
-          <AuditDialog log={log} />
-          <button type="button" className="btn btn-ghost" onClick={reset}>Reset demo</button>
+          <AuditDialog log={log} now={now} />
+          <button type="button" className="btn btn-ghost" onClick={() => dispatch({ type: 'reset', file: loadDemo(), selectedId: DEMO_SELECTED })}>Reset demo</button>
+          <ThemeToggle />
         </div>
       </header>
 
       <div className="workspace">
-        <Docket items={docket} selectedId={selected?.id ?? null} duplicates={duplicates} onSelect={(id) => { setSelectedId(id); setError(null); }} filters={filters} onFilter={setFilters} total={file.requests.length} />
+        <Docket
+          rows={rows}
+          summary={summary}
+          selectedId={current?.id ?? null}
+          onSelect={(id) => dispatch({ type: 'select', id })}
+          filters={filters}
+          onFilter={(next: DocketFilters) => dispatch({ type: 'filter', filters: next })}
+          onExportCsv={() => downloadText(`petitio-docket-${file.asOf}.csv`, docketToCsv(rows), 'text/csv')}
+        />
         <main>
-          {error && <div className="notice notice-red" role="alert" style={{ margin: '16px 28px 0' }}><strong>Refused.</strong> {error}</div>}
-          {selected ? (
-            <CaseDetail key={selected.id} request={selected} systems={file.systems} asOf={file.asOf} duplicates={duplicates} onAction={onAction} onExtend={onExtend} />
+          {error && <div className="notice notice-red app-alert" role="alert"><strong>{errorPrefix}</strong> {error}</div>}
+          {current ? (
+            <CaseDetail
+              key={current.id}
+              request={current}
+              systems={file.systems}
+              asOf={file.asOf}
+              duplicates={duplicates}
+              onAction={(req) => act({ type: 'action', request: req })}
+              onExtend={(input) => act({ type: 'extend', input })}
+              eligibility={eligibility}
+              extraExports={extraExports}
+            />
           ) : (
             <div className="detail"><div className="notice">No request selected. Pick one from the docket or import a case file.</div></div>
           )}
@@ -138,7 +116,10 @@ export function App() {
       </div>
       <footer className="status-line">
         <span role="status" aria-live="polite">{status}</span>
-        <span>Source: {source === 'demo' ? 'bundled synthetic fixture' : 'imported file (in memory)'} · {file.requests.length} requests · no storage APIs, no network calls</span>
+        <span>
+          Source: {source === 'demo' ? 'bundled synthetic fixture' : 'imported file (in memory)'} · {file.requests.length} requests · no storage APIs, no network calls
+          {auditFailures > 0 ? ` · ${auditFailures} action(s) could not be audited` : ''}
+        </span>
       </footer>
     </>
   );

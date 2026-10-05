@@ -1,0 +1,39 @@
+# command: node <private-qa-harness>/browser-check.mjs --label upgrade --expect upgrade
+# cwd: .
+# node: v20.20.1
+# started: 2026-10-05T04:26:08.750Z
+ok   viewport desktop (1440px, light) responses=5 csp=0 
+ok   viewport tablet (768px, light) responses=5 csp=0 
+ok   viewport mobile (375px, light) responses=5 csp=0 
+ok   viewport desktop-dark (1440px, dark) responses=5 csp=0 
+ok   1 docket-loaded
+ok   2 search-filters-docket
+ok   3 sort-by-received
+ok   4 blocked-send-to-review-explained
+ok   5 record-result-and-send-to-review
+ok   6 unjustified-hold-blocks-response
+ok   7 duplicate-hold-refused
+ok   8 release-hold-prepare-response
+ok   9 reveal-redaction
+ok   10 export-packet-json
+ok   11 export-packet-markdown-html
+ok   12 extension-ineligible-explained
+ok   13 extension-recorded
+ok   14 closed-request-outcome
+ok   15 audit-chain-tamper-detected
+ok   16 verify-exported-log
+ok   17 import-rejected
+ok   18 validate-only-and-sample
+ok   19 export-import-roundtrip
+ok   20 export-csv
+ok   21 theme-toggle
+ok   22 print-media
+ok   23 keyboard-focus
+
+wrote <private-qa-harness>/screens/upgrade-browser-check.json
+headers: 25 responses checked against 8 production headers, 0 mismatch(es)
+csp: 0 violation(s); foreign requests: 0; page/console errors in flow: 0
+viewports: desktop:ok tablet:ok mobile:ok desktop-dark:ok
+flow (upgrade): 23 steps, 0 failed, downloads=7
+RESULT: PASS
+# finished: 2026-10-05T04:26:29.246Z exit: 0

@@ -1,0 +1,9 @@
+# command: npm run typecheck
+# cwd: .
+# node: v20.20.1
+# started: 2026-10-04T22:04:41.526Z
+
+> petitio@0.1.0 typecheck
+> tsc -b
+
+# finished: 2026-10-04T22:04:45.260Z exit: 0

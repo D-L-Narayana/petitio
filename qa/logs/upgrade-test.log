@@ -1,0 +1,91 @@
+# command: npm test
+# cwd: .
+# node: v20.20.1
+# started: 2026-10-05T04:39:45.516Z
+
+> petitio@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 .
+
+ ✓ src/test/journeys.test.tsx (33 tests) 15932ms
+     ✓ lists every request in urgency order with the preserved badge, meta and ribbon strings, and a summary strip that matches the engine  576ms
+     ✓ offers one jurisdiction option per profile, filters by jurisdiction, type and clock, shows the empty state, and selecting a row changes the detail but not the footer  646ms
+     ✓ recomputes every badge and the clock summary, ignores a cleared input and leaves the status and audit log untouched  310ms
+     ✓ walks REQ-2026-0415 from received to closed with the exact status after every action and focus on the heading after each stage change  1604ms
+     ✓ the third failed identity attempt rejects REQ-2026-0420 with identity-unverified  347ms
+     ✓ rejects REQ-2026-0423 with the chosen reason and the optional note  515ms
+     ✓ REQ-2026-0411: shows the lookup table with its flags, records a found result with a third-party field and reaches the green notice  862ms
+     ✓ records "No record" for the outstanding system and leaves the other results alone  380ms
+     ✓ REQ-2026-0411: record the lookup, send to review, an unjustified hold blocks the response, release it, prepare the response — with focus management and the held system excluded from the form  764ms
+     ✓ REQ-2026-0398: the held system is absent from the form; an unjustified hold blocks the packet until released; with every system held the form is replaced by the note; justified holds yield a partial response  833ms
+     ✓ REQ-2026-0411: Export packet JSON / Markdown / HTML download under the request id and omit the third-party value  410ms
+     ✓ the UI always exports without redacted values, even while the preview is revealed; only the engine option adds them under the reviewer banner  330ms
+     ✓ explains an impossible extension before the click with the exact sentences (REQ-2026-0398 too late, REQ-2026-0402 already extended) and hides the panel for terminal requests  472ms
+     ✓ records the single permitted extension on REQ-2026-0415 with the exact status, then explains that no second one is possible  403ms
+     ✓ REQ-2026-0415 notified on 2026-12-01 is refused with the exact INVALID_EXTENSION_INPUT alert, audited as "extension (refused)", and the request is unchanged  561ms
+     ✓ rejects an invalid pasted file with the alert and keeps the session, status, selection and audit log untouched  325ms
+     ✓ Export case file → re-import: exact status, source line, equal request ids, first request selected and the session state carried over  679ms
+     ✓ verify → tamper → broken → restore → intact; Export JSON writes the petitio.auditlog envelope; a tampered export is caught by "Verify an exported log" without replacing the session log  636ms
+     ✓ when an append fails the action still stands, the alert says "Not recorded.", the source line counts it, and later appends continue from the last good entry  441ms
+     ✓ reloads the fixture, selects REQ-2026-0398, restores the source line and clears the alert, but keeps filters, search text, audit log and theme  1180ms
+     ✓ search narrows rows and heading over id, pseudonym, email and account id (trimmed, case-insensitive); Clear filters restores everything  729ms
+     ✓ rows form a roving-tabindex list: Enter on the focused row selects it like a click and clears the alert  331ms
+     ✓ shows "Closed 7 days late" for REQ-2026-0375 and "Closed on time" for REQ-2026-0380, nothing for open requests, and derives "Closed 1 day late" live when a request is closed one day past due  370ms
+ ✓ src/test/a11y.test.tsx (10 tests) 6275ms
+     ✓ every button, input, select and textarea on the main page has an accessible name — for requests in review, collecting (with extra field rows) and received  1267ms
+     ✓ every ribbon is an image with a label and every scrollable table or list is a named, focusable region  475ms
+     ✓ both dialogs have a title and a description, and every control inside them is named  403ms
+     ✓ exactly one role="status" (the footer) while no dialog is open; the audit dialog adds its verification notice only while it is open  450ms
+     ✓ role="alert" is absent until a refusal, names the code, and is cleared when another request is selected  609ms
+     ✓ stay in the DOM as real buttons with aria-disabled="true" and an aria-describedby explanation; enabled ones say aria-disabled="false"  816ms
+     ✓ moves focus to the request heading after a stage change and never leaves it on <body> after an action  1207ms
+     ✓ Import a case file: focus lands inside on open, Tab stays inside, Escape closes and returns focus to the trigger  496ms
+     ✓ Hash-chained audit log: focus lands inside on open, Tab stays inside, Escape closes and returns focus to the trigger  385ms
+ ✓ src/ui/CaseDetail.test.tsx (50 tests) 3924ms
+     ✓ renders the heading, stage rail and every panel for a fixture request in review  556ms
+     ✓ moves focus to the heading after a stage change made through the real action button  310ms
+     ✓ moves focus to the heading when the pressed control unmounts without a stage change (release hold)  303ms
+     ✓ keeps focus on a control that survives the action (apply hold)  303ms
+     ✓ collects record id, subject email and fields (with third-party marks) for a found record  502ms
+ ✓ src/App.test.tsx (5 tests) 2498ms
+     ✓ loads the demo docket sorted by urgency with the overdue request first  600ms
+     ✓ explains why sending to review is blocked and lets the analyst record the missing lookup  927ms
+     ✓ surfaces the refusal when an unjustified hold blocks the response  335ms
+     ✓ rejects an invalid pasted case file with a readable error and keeps the session  495ms
+ ✓ src/ui/Docket.test.tsx (20 tests) 2150ms
+     ✓ renders the aside, the heading and each row with the preserved structure  396ms
+ ✓ src/ui/ImportDialog.test.tsx (7 tests) 1078ms
+     ✓ imports a .json file dropped onto the dialog through the same validation as the file picker  417ms
+ ✓ src/ui/AuditDialog.test.tsx (5 tests) 559ms
+     ✓ reports an intact chain for a valid envelope, shows it as imported and leaves the session log untouched  304ms
+ ✓ src/theme/ThemeToggle.test.tsx (5 tests) 438ms
+ ✓ src/test/scenarios.test.ts (38 tests) 340ms
+ ✓ src/engine/workflow.test.ts (43 tests) 85ms
+ ✓ src/ui/StageRail.test.tsx (4 tests) 406ms
+     ✓ is a focusable, labelled list of the seven ordered stages  302ms
+ ✓ src/ui/Ribbon.test.tsx (6 tests) 371ms
+ ✓ src/engine/casefile.test.ts (23 tests) 70ms
+ ✓ src/engine/deadline.test.ts (47 tests) 69ms
+ ✓ src/engine/docket.test.ts (24 tests) 84ms
+ ✓ src/engine/audit.test.ts (12 tests) 43ms
+ ✓ src/state/useSession.test.tsx (7 tests) 47ms
+ ✓ src/theme/useTheme.test.tsx (7 tests) 43ms
+ ✓ src/state/session.test.ts (24 tests) 44ms
+ ✓ src/engine/integrity.test.ts (14 tests) 16ms
+ ✓ src/ui/download.test.ts (15 tests) 29ms
+ ✓ src/state/auditQueue.test.ts (11 tests) 96ms
+ ✓ src/engine/reconcile.test.ts (28 tests) 110ms
+ ✓ src/test/setup.test.ts (5 tests) 18ms
+ ✓ src/theme/tokens.test.ts (42 tests) 14ms
+ ✓ src/engine/duplicates.test.ts (5 tests) 12ms
+ ✓ src/engine/exports.test.ts (11 tests) 11ms
+ ✓ src/ui/detail/format.test.ts (4 tests) 6ms
+
+ Test Files  28 passed (28)
+      Tests  505 passed (505)
+   Start at  04:39:46
+   Duration  77.54s (transform 1.96s, setup 5.03s, import 3.84s, tests 34.77s, environment 27.55s)
+
+# finished: 2026-10-05T04:41:03.885Z exit: 0

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { findDuplicates } from './duplicates';
 import { buildResponsePacket } from './reconcile';
-import type { RightsRequest } from './types';
+import type { PacketAction, RequestType, RightsRequest, SystemResult } from './types';
 
 function req(overrides: Partial<RightsRequest>): RightsRequest {
   return {
@@ -119,5 +119,176 @@ describe('buildResponsePacket', () => {
     const packet = buildResponsePacket(clean, '2026-09-05');
     expect(packet.partial).toBe(false);
     expect(packet.redactions).toEqual([]);
+  });
+});
+
+describe('buildResponsePacket · right-aware actions', () => {
+  const at = '2026-09-02T00:00:00Z';
+  /** Four systems: a clean match, a held match, an identity conflict and a system with no record. */
+  const matrixResults: SystemResult[] = [
+    { systemId: 'crm', found: true, recordId: 'c1', subjectEmail: 'p1@people.example', fields: [{ name: 'name', value: 'Priya Example' }], lookedUpAt: at },
+    { systemId: 'billing', found: true, recordId: 'b1', subjectEmail: 'p1@people.example', fields: [{ name: 'invoices', value: '3 invoices' }], lookedUpAt: at },
+    { systemId: 'support', found: true, recordId: 's1', subjectEmail: 'other@people.example', fields: [{ name: 'tickets', value: '2 tickets' }], lookedUpAt: at },
+    { systemId: 'archive', found: false, fields: [], lookedUpAt: at },
+  ];
+  const billingHold = { id: 'H1', systemId: 'billing', reason: 'legal-obligation-retention' as const, note: 'Retention period (synthetic)', appliedAt: at };
+
+  const PRIMARY: Array<[RequestType, PacketAction]> = [
+    ['access', 'disclose'],
+    ['portability', 'export'],
+    ['erasure', 'erase'],
+    ['rectification', 'rectify'],
+    ['opt-out-sale', 'opt-out'],
+  ];
+
+  it.each(PRIMARY)('maps a %s request to %s for found systems, retain for held, withhold for conflicts, nothing for not-found', (type, primary) => {
+    const packet = buildResponsePacket(req({ type, systemResults: matrixResults, holds: [billingHold] }), '2026-09-05');
+    expect(packet.actions).toEqual([
+      { systemId: 'crm', action: primary },
+      { systemId: 'billing', action: 'retain', reason: 'legal-obligation-retention' },
+      { systemId: 'support', action: 'withhold', reason: 'identity-conflict' },
+    ]);
+    // existing fields keep their meaning: the held system is excluded, the conflict is withheld, not-found is omitted
+    expect(packet.disclosures.map((d) => d.systemId)).toEqual(['crm', 'support']);
+    expect(packet.exclusions).toEqual([{ systemId: 'billing', reason: 'legal-obligation-retention', note: 'Retention period (synthetic)' }]);
+    expect(packet.partial).toBe(true);
+  });
+
+  it('lets an active hold take precedence over an identity conflict on the same system', () => {
+    const hold = { id: 'H2', systemId: 'support', reason: 'fraud-prevention' as const, note: 'Open fraud case (synthetic)', appliedAt: at };
+    const packet = buildResponsePacket(req({ type: 'erasure', systemResults: matrixResults, holds: [hold] }), '2026-09-05');
+    expect(packet.actions).toEqual([
+      { systemId: 'crm', action: 'erase' },
+      { systemId: 'billing', action: 'erase' },
+      { systemId: 'support', action: 'retain', reason: 'fraud-prevention' },
+    ]);
+    expect(packet.conflicts).toEqual([]);
+  });
+
+  it('ignores released holds when deciding between retain and the primary action', () => {
+    const released = { ...billingHold, releasedAt: '2026-09-04T00:00:00Z' };
+    const packet = buildResponsePacket(req({ type: 'portability', systemResults: matrixResults.slice(0, 2), holds: [released] }), '2026-09-05');
+    expect(packet.actions).toEqual([
+      { systemId: 'crm', action: 'export' },
+      { systemId: 'billing', action: 'export' },
+    ]);
+    expect(packet.partial).toBe(false);
+  });
+
+  it('returns no actions when no system result was found', () => {
+    const packet = buildResponsePacket(req({ systemResults: [matrixResults[3]!] }), '2026-09-05');
+    expect(packet.actions).toEqual([]);
+  });
+});
+
+describe('buildResponsePacket · summary sentence', () => {
+  const at = '2026-09-15T09:00:00Z';
+
+  it('describes a partial erasure packet in one operational sentence', () => {
+    const request = req({
+      type: 'erasure',
+      holds: [{ id: 'HOLD-1', systemId: 'billing', reason: 'legal-obligation-retention', note: 'Invoices retained (synthetic)', appliedAt: at }],
+      systemResults: [
+        {
+          systemId: 'crm',
+          found: true,
+          recordId: 'crm-1',
+          subjectEmail: 'p1@people.example',
+          fields: [
+            { name: 'displayName', value: 'Quill Oberesh' },
+            { name: 'agentNote', value: 'Neighbour accepted the parcel', thirdParty: true },
+          ],
+          lookedUpAt: at,
+        },
+        { systemId: 'billing', found: true, recordId: 'cust-1', subjectEmail: 'p1@people.example', fields: [{ name: 'invoices', value: '6 invoices' }], lookedUpAt: at },
+        { systemId: 'support', found: false, fields: [], lookedUpAt: at },
+      ],
+    });
+    const packet = buildResponsePacket(request, '2026-10-01');
+    expect(packet.summary).toBe('Erasure request: erase 1 system, retain 1 system under legal-obligation-retention, 1 redaction (third-party data); partial response.');
+  });
+
+  it('describes a complete access packet and never claims compliance', () => {
+    const request = req({
+      systemResults: [
+        { systemId: 'crm', found: true, recordId: 'crm-1', subjectEmail: 'p1@people.example', fields: [{ name: 'displayName', value: 'Aspen Kowalczyk' }], lookedUpAt: at },
+        { systemId: 'billing', found: true, recordId: 'cust-1', subjectEmail: 'p1@people.example', fields: [{ name: 'invoices', value: '2 invoices' }], lookedUpAt: at },
+        { systemId: 'support', found: false, fields: [], lookedUpAt: at },
+      ],
+    });
+    const packet = buildResponsePacket(request, '2026-10-01');
+    expect(packet.summary).toBe('Access request: disclose 2 systems; complete response.');
+    expect(packet.summary).not.toMatch(/compliant|lawful/i);
+  });
+
+  it('counts withheld systems and mixed redaction reasons', () => {
+    const request = req({
+      systemResults: [
+        {
+          systemId: 'crm',
+          found: true,
+          recordId: 'crm-1',
+          subjectEmail: 'p1@people.example',
+          fields: [{ name: 'name', value: 'Priya Example' }, { name: 'note', value: 'Spouse called', thirdParty: true }],
+          lookedUpAt: at,
+        },
+        { systemId: 'billing', found: true, recordId: 'inv-5', subjectEmail: 'someone.else@people.example', fields: [{ name: 'lastInvoice', value: 'INV-5' }], lookedUpAt: at },
+      ],
+    });
+    const packet = buildResponsePacket(request, '2026-10-01');
+    expect(packet.summary).toBe('Access request: disclose 1 system, withhold 1 system (identity conflict), 2 redactions (1 third-party data, 1 identity conflict); partial response.');
+  });
+
+  it('says so when nothing was found or nothing was looked up', () => {
+    const nothingFound = buildResponsePacket(req({ type: 'rectification', systemResults: [{ systemId: 'crm', found: false, fields: [], lookedUpAt: at }] }), '2026-10-01');
+    expect(nothingFound.summary).toBe('Rectification request: no records found in 1 system; complete response.');
+    const empty = buildResponsePacket(req({ type: 'opt-out-sale' }), '2026-10-01');
+    expect(empty.summary).toBe('Opt-out request: no system results recorded; complete response.');
+  });
+
+  it.each([
+    ['access', 'Access request: disclose 1 system; complete response.'],
+    ['portability', 'Portability request: export 1 system; complete response.'],
+    ['erasure', 'Erasure request: erase 1 system; complete response.'],
+    ['rectification', 'Rectification request: rectify 1 system; complete response.'],
+    ['opt-out-sale', 'Opt-out request: apply opt-out to 1 system; complete response.'],
+  ] as Array<[RequestType, string]>)('uses the type label and verb for a clean %s packet', (type, expected) => {
+    const clean = req({
+      type,
+      systemResults: [{ systemId: 'crm', found: true, recordId: 'c1', subjectEmail: 'p1@people.example', fields: [{ name: 'name', value: 'Priya Example' }], lookedUpAt: at }],
+    });
+    expect(buildResponsePacket(clean, '2026-10-01').summary).toBe(expected);
+  });
+
+  it('explains a hold on a system without a found record, which still makes the packet partial', () => {
+    const request = req({
+      holds: [{ id: 'H9', systemId: 'support', reason: 'legal-hold', note: 'Litigation hold (synthetic)', appliedAt: at }],
+      systemResults: [
+        { systemId: 'crm', found: true, recordId: 'crm-1', subjectEmail: 'p1@people.example', fields: [{ name: 'name', value: 'Priya Example' }], lookedUpAt: at },
+        { systemId: 'support', found: false, fields: [], lookedUpAt: at },
+      ],
+    });
+    const packet = buildResponsePacket(request, '2026-10-01');
+    expect(packet.partial).toBe(true);
+    expect(packet.actions).toEqual([{ systemId: 'crm', action: 'disclose' }]);
+    expect(packet.summary).toBe('Access request: disclose 1 system, 1 hold on a system without a found record; partial response.');
+  });
+
+  it('groups retained systems by hold reason when the reasons differ', () => {
+    const request = req({
+      type: 'erasure',
+      holds: [
+        { id: 'H1', systemId: 'crm', reason: 'legal-hold', note: 'Litigation hold (synthetic)', appliedAt: at },
+        { id: 'H2', systemId: 'billing', reason: 'legal-obligation-retention', note: 'Invoices retained (synthetic)', appliedAt: at },
+      ],
+      systemResults: [
+        { systemId: 'crm', found: true, recordId: 'crm-1', subjectEmail: 'p1@people.example', fields: [{ name: 'name', value: 'Priya Example' }], lookedUpAt: at },
+        { systemId: 'billing', found: true, recordId: 'cust-1', subjectEmail: 'p1@people.example', fields: [{ name: 'invoices', value: '2 invoices' }], lookedUpAt: at },
+        { systemId: 'support', found: true, recordId: 'tickets-1', subjectEmail: 'p1@people.example', fields: [{ name: 'tickets', value: '1 ticket' }], lookedUpAt: at },
+      ],
+    });
+    const packet = buildResponsePacket(request, '2026-10-01');
+    expect(packet.actions?.map((a) => a.action)).toEqual(['retain', 'retain', 'erase']);
+    expect(packet.summary).toBe('Erasure request: erase 1 system, retain 2 systems (1 under legal-hold, 1 under legal-obligation-retention); partial response.');
   });
 });

@@ -1,0 +1,6 @@
+# command: node scripts/check-tokens.mjs
+# cwd: .
+# node: v20.20.1
+# started: 2026-10-05T04:25:43.461Z
+check-tokens: OK — 42 file(s) scanned under src (tests skipped); no literal colours outside src/theme/tokens.css; no inline styles outside src/ui/Ribbon.tsx
+# finished: 2026-10-05T04:25:43.545Z exit: 0

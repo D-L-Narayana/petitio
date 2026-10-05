@@ -1,0 +1,197 @@
+/*
+ * Petitio design tokens (PLAN §4.2). This is the ONLY stylesheet allowed to contain literal colours.
+ *
+ * Light values are the measured baseline palette (green #0f6b4a and amber #9a4506 are the contrast fixes).
+ * Dark values are a navy/slate palette; src/theme/tokens.test.ts asserts every text pair reaches 4.5:1
+ * in both themes. The dark block appears twice on purpose: once for the explicit in-memory choice
+ * (`<html data-theme="dark">`) and once for the OS preference when no explicit light choice was made.
+ * The print block forces the light palette so paper output is dark text on white.
+ */
+:root {
+  color-scheme: light;
+  --ink: #1b2432;
+  --ink-2: #33404f;
+  --mute: #5b6775;
+  --rule: #cbd3dc;
+  --paper: #eef1f4;
+  --panel: #ffffff;
+  --panel-2: #f6f8fa;
+  --amber: #9a4506;
+  --amber-bg: #fff4e5;
+  --amber-line: #f4cfa0;
+  --red: #b42318;
+  --red-bg: #fdecea;
+  --red-line: #efb4ad;
+  --danger-line: #e8b3ae;
+  --green: #0f6b4a;
+  --green-bg: #e7f5ee;
+  --green-line: #b8dfcb;
+  --indigo: #3449a3;
+  --indigo-bg: #e9ecf8;
+  --violet: #6b3fa0;
+  --violet-bg: #f1e8fb;
+  --violet-line: #d8c6ee;
+  --track: #e2e7ed;
+  --track-statutory: #c8d0da;
+  --track-hatch: #e9edf2;
+  --track-neutral: #8a96a3;
+  --masthead-bg: #1b2432;
+  --masthead-fg: #f3f5f8;
+  --masthead-mute: #c6cfd9;
+  --masthead-rule: #3a4756;
+  --masthead-input-bg: #0f1620;
+  --masthead-hover: #26303d;
+  --on-accent: #ffffff;
+  --btn-primary-hover: #2a3b87;
+  --row-rule: #e6eaef;
+  --overlay: rgba(27, 36, 50, 0.55);
+  --shadow-dialog: 0 24px 60px rgba(0, 0, 0, 0.25);
+  --redacted-bg: var(--ink);
+  --display: 'Bricolage Grotesque Variable', 'Helvetica Neue', Arial, sans-serif;
+  --body: 'Source Serif 4 Variable', Georgia, 'Times New Roman', serif;
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --radius: 4px;
+  --focus: 0 0 0 3px #ffffff, 0 0 0 5px var(--indigo);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --ink: #e6ebf2;
+  --ink-2: #c3ccd8;
+  --mute: #98a4b3;
+  --rule: #324053;
+  --paper: #0f1620;
+  --panel: #171f2b;
+  --panel-2: #1f2937;
+  --amber: #f2b36b;
+  --amber-bg: #3a2a12;
+  --amber-line: #6b4a1e;
+  --red: #f49189;
+  --red-bg: #3d1c1a;
+  --red-line: #6e3330;
+  --danger-line: #7a3a35;
+  --green: #5fd3a5;
+  --green-bg: #12302a;
+  --green-line: #22564a;
+  --indigo: #9fb0ff;
+  --indigo-bg: #1e2a52;
+  --violet: #c9a7f2;
+  --violet-bg: #2d2140;
+  --violet-line: #4a3a66;
+  --track: #243040;
+  --track-statutory: #34435a;
+  --track-hatch: #2a3647;
+  --track-neutral: #7f8c9b;
+  --masthead-bg: #0a1017;
+  --masthead-fg: #f3f5f8;
+  --masthead-mute: #b9c3cf;
+  --masthead-rule: #3a4756;
+  --masthead-input-bg: #141c27;
+  --masthead-hover: #1a2432;
+  --on-accent: #0f1620;
+  --btn-primary-hover: #b7c4ff;
+  --row-rule: #27333f;
+  --overlay: rgba(0, 0, 0, 0.6);
+  --shadow-dialog: 0 24px 60px rgba(0, 0, 0, 0.6);
+  --redacted-bg: var(--ink);
+  --display: 'Bricolage Grotesque Variable', 'Helvetica Neue', Arial, sans-serif;
+  --body: 'Source Serif 4 Variable', Georgia, 'Times New Roman', serif;
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --radius: 4px;
+  --focus: 0 0 0 3px #0f1620, 0 0 0 5px var(--indigo);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --ink: #e6ebf2;
+    --ink-2: #c3ccd8;
+    --mute: #98a4b3;
+    --rule: #324053;
+    --paper: #0f1620;
+    --panel: #171f2b;
+    --panel-2: #1f2937;
+    --amber: #f2b36b;
+    --amber-bg: #3a2a12;
+    --amber-line: #6b4a1e;
+    --red: #f49189;
+    --red-bg: #3d1c1a;
+    --red-line: #6e3330;
+    --danger-line: #7a3a35;
+    --green: #5fd3a5;
+    --green-bg: #12302a;
+    --green-line: #22564a;
+    --indigo: #9fb0ff;
+    --indigo-bg: #1e2a52;
+    --violet: #c9a7f2;
+    --violet-bg: #2d2140;
+    --violet-line: #4a3a66;
+    --track: #243040;
+    --track-statutory: #34435a;
+    --track-hatch: #2a3647;
+    --track-neutral: #7f8c9b;
+    --masthead-bg: #0a1017;
+    --masthead-fg: #f3f5f8;
+    --masthead-mute: #b9c3cf;
+    --masthead-rule: #3a4756;
+    --masthead-input-bg: #141c27;
+    --masthead-hover: #1a2432;
+    --on-accent: #0f1620;
+    --btn-primary-hover: #b7c4ff;
+    --row-rule: #27333f;
+    --overlay: rgba(0, 0, 0, 0.6);
+    --shadow-dialog: 0 24px 60px rgba(0, 0, 0, 0.6);
+    --redacted-bg: var(--ink);
+    --display: 'Bricolage Grotesque Variable', 'Helvetica Neue', Arial, sans-serif;
+    --body: 'Source Serif 4 Variable', Georgia, 'Times New Roman', serif;
+    --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    --radius: 4px;
+    --focus: 0 0 0 3px #0f1620, 0 0 0 5px var(--indigo);
+  }
+}
+
+@media print {
+  /* Paper is always light: these selectors out-rank both dark blocks (0,2,0 and later in source). */
+  :root:not([data-theme='light']), :root[data-theme='dark'] {
+    color-scheme: light;
+    --ink: #1b2432;
+    --ink-2: #33404f;
+    --mute: #5b6775;
+    --rule: #cbd3dc;
+    --paper: #eef1f4;
+    --panel: #ffffff;
+    --panel-2: #f6f8fa;
+    --amber: #9a4506;
+    --amber-bg: #fff4e5;
+    --amber-line: #f4cfa0;
+    --red: #b42318;
+    --red-bg: #fdecea;
+    --red-line: #efb4ad;
+    --danger-line: #e8b3ae;
+    --green: #0f6b4a;
+    --green-bg: #e7f5ee;
+    --green-line: #b8dfcb;
+    --indigo: #3449a3;
+    --indigo-bg: #e9ecf8;
+    --violet: #6b3fa0;
+    --violet-bg: #f1e8fb;
+    --violet-line: #d8c6ee;
+    --track: #e2e7ed;
+    --track-statutory: #c8d0da;
+    --track-hatch: #e9edf2;
+    --track-neutral: #8a96a3;
+    --masthead-bg: #1b2432;
+    --masthead-fg: #f3f5f8;
+    --masthead-mute: #c6cfd9;
+    --masthead-rule: #3a4756;
+    --masthead-input-bg: #0f1620;
+    --masthead-hover: #26303d;
+    --on-accent: #ffffff;
+    --btn-primary-hover: #2a3b87;
+    --row-rule: #e6eaef;
+    --overlay: rgba(27, 36, 50, 0.55);
+    --shadow-dialog: 0 24px 60px rgba(0, 0, 0, 0.25);
+    --redacted-bg: var(--ink);
+    --focus: 0 0 0 3px #ffffff, 0 0 0 5px var(--indigo);
+  }
+}
